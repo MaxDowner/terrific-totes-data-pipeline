@@ -55,6 +55,11 @@ data "aws_iam_policy_document" "cw_document" {
       "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
     ]
   }
+  statement {
+    actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    # resource subjust to greater specificity
+    resources = ["arn:aws:logs:*:*:*"]
+  }
 }
 
 # Create
