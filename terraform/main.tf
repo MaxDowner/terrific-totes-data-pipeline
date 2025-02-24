@@ -8,11 +8,11 @@ terraform {
    backend "s3" {
     bucket = "totes-tf-states"
     key = "/terraform.tfstate"
-    region = "eu-west-2"
+    region = var.region_name
   }
 }
 provider "aws" {
-  region = "eu-west-2"
+  region = var.region_name
   default_tags {
     tags = {
         project = "tote piping"
