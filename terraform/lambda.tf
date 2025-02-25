@@ -14,3 +14,12 @@ resource "aws_lambda_function" "toy_handler" {
   timeout =  30
   #TODO: Connect the layer which is outlined above
 }
+
+resource "aws_lambda_permission" "allow_scheduler" {
+  statement_id = "AllowExecutionFromCloudWatch"  
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.toy_handler.arn
+  principal = "events.amazonaws.com"
+  source_arn = aws_cloudwatch_event_rule.scheduler.arn
+  source_account = data.aws_caller_identity.current.account_id
+}
