@@ -22,3 +22,8 @@ variable "region_name" {
   type = string
   default = "eu-west-2"
 }
+
+variable "default_timeout" {
+  type    = number
+  default = 5
+}
