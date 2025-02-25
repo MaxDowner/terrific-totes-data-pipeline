@@ -2,12 +2,12 @@
 
 Data engineering pipeline project by
 
-Morgan Lamb
-Gerorgina Hardcastle
+Max Downer
+Georgina Hardcastle
 Charlotte Hooson
+Morgan Lamb
 Andrew Rudge
 Hamzah Saeid
-Max 
 
 Uses infastructure as code to deploy a monitored system to AWS.
 Takes constantly updating data from a live database for sales and engineering
