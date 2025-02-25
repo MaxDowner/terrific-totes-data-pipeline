@@ -1,9 +1,3 @@
-# create csv file with first/initial/default time
-# open time log (csv) 
-# retrieve last time from time log
-# record current time (save in log)
-# return tuple with last time and new time
-
 import csv
 from datetime import datetime
 
