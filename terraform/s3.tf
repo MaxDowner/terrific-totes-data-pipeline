@@ -11,3 +11,9 @@ resource "aws_s3_bucket" "ingestion_code_bucket" {
         bucket_use = "ingests data"
     }
 }
+
+resource "aws_s3_object" "lambda_code" {
+  bucket = aws_s3_bucket.ingestion_code_bucket.bucket
+  key = "toy/function.zip"
+  source = "${path.module}/../function.zip"
+}
