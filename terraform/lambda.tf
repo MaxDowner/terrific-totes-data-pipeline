@@ -13,6 +13,14 @@ resource "aws_lambda_function" "toy_handler" {
   handler = "toy.lambda_handler"
   timeout =  30
   #TODO: Connect the layer which is outlined above
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_cw_policy_attachment,
+    aws_cloudwatch_log_group.ingest_group,
+  ]
+}
+
+resource "aws_cloudwatch_log_group" "ingest_group" {
+  name = "/aws/lambda/${var.lambda_name}"
 }
 
 resource "aws_lambda_permission" "allow_scheduler" {
@@ -23,3 +31,4 @@ resource "aws_lambda_permission" "allow_scheduler" {
   source_arn = aws_cloudwatch_event_rule.scheduler.arn
   source_account = data.aws_caller_identity.current.account_id
 }
+
