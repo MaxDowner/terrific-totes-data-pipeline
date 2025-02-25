@@ -32,4 +32,14 @@ resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   namespace = "ErrorNamespace"
   alarm_description         = "This metric monitors Lambda execution logs for any mention of the word ERROR"
   statistic                 = "SampleCount"
+  alarm_actions = [aws_sns_topic.errorsOverTheLimit.arn]
+}
+
+resource "aws_sns_topic" "errorsOverTheLimit" {
+  name = "ErrorsOverTheLimit"
+}
+resource "aws_sns_topic_subscription" "lambda_error_email" {
+  topic_arn = aws_sns_topic.errorsOverTheLimit.arn
+  protocol  = "email"
+  endpoint  = "terrific.totes.05.coad@gmail.com"
 }
