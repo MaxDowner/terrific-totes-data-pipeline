@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "cw_document" {
   statement {
     actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
     # resource subjust to greater specificity
-    resources = ["arn:aws:logs:*:*:*"]
+    resources = ["arn:aws:logs:*:*:log-group:/aws/lambda/toy_handler:*"]
   }
 }
 
