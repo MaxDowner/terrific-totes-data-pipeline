@@ -10,7 +10,7 @@ resource "aws_cloudwatch_event_target" "lambda_target" {
     arn = aws_lambda_function.toy_handler.arn
 }
 
-resource "aws_cloudwatch_log_metric_filter" "error" {
+resource "aws_cloudwatch_log_metric_filter" "error_metric" {
   name           = "ErrorCount"
   pattern        = "ERROR"
   log_group_name = "/aws/lambda/toy_handler"
@@ -23,14 +23,13 @@ resource "aws_cloudwatch_log_metric_filter" "error" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
-  alarm_name                = "terraform-test-foobar5"
+  alarm_name                = "error_alarm"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = 2
-  metric_name               = "ErrorCount"
-  namespace                 = "AWS/Lambda"
-  period                    = 120
-  statistic                 = "Average"
-  threshold                 = 80
-  alarm_description         = "This metric monitors toy Lambda execution"
-  insufficient_data_actions = []
+  metric_name               = aws_cloudwatch_log_metric_filter.error_metric.name
+  period                    = 900
+  threshold                 = 1
+  namespace = "ErrorNamespace"
+  alarm_description         = "This metric monitors Lambda execution logs for any mention of the word ERROR"
+  statistic                 = "SampleCount"
 }
