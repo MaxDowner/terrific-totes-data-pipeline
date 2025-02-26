@@ -43,3 +43,5 @@ resource "aws_sns_topic_subscription" "lambda_error_email" {
   protocol  = "email"
   endpoint  = "terrific.totes.05.coad@gmail.com"
 }
+
+# hi andrew :)
