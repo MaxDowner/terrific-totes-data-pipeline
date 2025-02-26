@@ -26,9 +26,9 @@ resource "aws_cloudwatch_log_metric_filter" "error_metric" {
 resource "aws_cloudwatch_metric_alarm" "metric_alarm" {
   alarm_name                = "error_alarm"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
-  evaluation_periods        = 2
+  evaluation_periods        = 1
   metric_name               = aws_cloudwatch_log_metric_filter.error_metric.name
-  period                    = 900
+  period                    = 60
   threshold                 = 1
   namespace = "ErrorNamespace"
   alarm_description         = "This metric monitors Lambda execution logs for any mention of the word ERROR"
