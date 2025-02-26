@@ -17,3 +17,9 @@ resource "aws_s3_object" "lambda_code" {
   key = "toy/function.zip"
   source = "${path.module}/../function.zip"
 }
+
+resource "aws_s3_object" "layer_code" {
+  bucket = aws_s3_bucket.ingestion_code_bucket.bucket
+  key = "toy/layer.zip"
+  source = "${path.module}/../layer.zip"
+}
