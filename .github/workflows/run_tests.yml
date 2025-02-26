@@ -32,7 +32,7 @@ jobs:
       - name: pip audit
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
-          virtual-environment: env/   
+          virtual-environment: venv/   
        
 
   # deploy-lambda:
