@@ -18,5 +18,3 @@ def get_time_window():
         csv_writer.writerow([time, "None"])
     
     return (last_line.split(',')[0], str(time))
-
-
