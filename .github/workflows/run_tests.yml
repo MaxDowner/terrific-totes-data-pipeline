@@ -24,28 +24,28 @@ jobs:
       - name: run-all-checks
         run: make run-checks     
 
-  deploy-lambda:
-    name: deploy-lambda
-    needs: run-tests
-    environment: dev
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: setup terraform
-        uses: hashicorp/setup-terraform@v3
-      - name: aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-      - name: terraform init
-        working-directory: terraform
-        run: terraform init
-      - name: terraform plan
-        working-directory: terraform
-        run: terraform plan
-      - name: terraform format
-        working-directory: terraform
-        run: terraform fmt
+  # deploy-lambda:
+  #   name: deploy-lambda
+  #   needs: run-tests
+  #   environment: dev
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout repo
+  #       uses: actions/checkout@v4
+  #     - name: setup terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #     - name: aws credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-region: ${{ secrets.AWS_REGION }}
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+  #     - name: terraform init
+  #       working-directory: terraform
+  #       run: terraform init
+  #     - name: terraform plan
+  #       working-directory: terraform
+  #       run: terraform plan
+  #     - name: terraform format
+  #       working-directory: terraform
+  #       run: terraform fmt
