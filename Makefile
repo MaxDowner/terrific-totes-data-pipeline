@@ -81,6 +81,6 @@ check-coverage:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --cov=src/ test/ --cov-fail-under=90)
 
 ## Run all checks
-run-checks: security-test flake8-test-src unit-test check-coverage
+run-checks: security-test flake8-test-src flake8-test-test unit-test check-coverage
 
 ########################################################################

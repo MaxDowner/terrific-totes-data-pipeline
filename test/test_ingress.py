@@ -1,4 +1,3 @@
-import pytest
 from decimal import Decimal
 from unittest.mock import patch
 
@@ -14,7 +13,7 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
     # Act
     results = ingress_handler()
     # Assert
-    
+
     for result in results[0]["currency"]:
         assert isinstance(result["currency_id"], expected_id_type)
         assert isinstance(result["currency_code"], expected_code_type)
@@ -50,8 +49,22 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
             "Manchester",
             "jeanette.erdman@terrifictotes.com",
         ],
-        [4, "Ana", "Glover", "Production", "Leeds", "ana.glover@terrifictotes.com"],
-        [5, "Magdalena", "Zieme", "HR", "Leeds", "magdalena.zieme@terrifictotes.com"],
+        [
+            4,
+            "Ana",
+            "Glover",
+            "Production",
+            "Leeds",
+            "ana.glover@terrifictotes.com",
+        ],
+        [
+            5,
+            "Magdalena",
+            "Zieme",
+            "HR",
+            "Leeds",
+            "magdalena.zieme@terrifictotes.com",
+        ],
         [
             6,
             "Korey",
@@ -108,7 +121,14 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
             "Manchester",
             "imani.walker@terrifictotes.com",
         ],
-        [13, "Stan", "Lehner", "Dispatch", "Leds", "stan.lehner@terrifictotes.com"],
+        [
+            13,
+            "Stan",
+            "Lehner",
+            "Dispatch",
+            "Leds",
+            "stan.lehner@terrifictotes.com",
+        ],
         [
             14,
             "Rigoberto",
@@ -141,7 +161,14 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
             "Leeds",
             "irving.o'keefe@terrifictotes.com",
         ],
-        [18, "Tomasa", "Moore", "HR", "Leeds", "tomasa.moore@terrifictotes.com"],
+        [
+            18,
+            "Tomasa",
+            "Moore",
+            "HR",
+            "Leeds",
+            "tomasa.moore@terrifictotes.com",
+        ],
         [
             19,
             "Pierre",
@@ -172,7 +199,9 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
         assert isinstance(result["staff_id"], expected_id_type)
         assert isinstance(result["first_name"], expected_first_name_type)
         assert isinstance(result["last_name"], expected_last_name_type)
-        assert isinstance(result["department_name"], expected_department_name_type)
+        assert isinstance(
+            result["department_name"], expected_department_name_type
+        )
         assert isinstance(result["location"], expected_location_type)
         assert isinstance(result["email_address"], expected_email_address_type)
         assert len(result) == 6
@@ -390,7 +419,9 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
     # Assert
     for result in results[4]["counterparty"]:
         assert isinstance(result["counterparty_id"], expected_id_type)
-        assert isinstance(result["counterparty_legal_name"], expected_legal_name_type)
+        assert isinstance(
+            result["counterparty_legal_name"], expected_legal_name_type
+        )
         assert isinstance(result["address_line_1"], expected_al1_type)
         assert isinstance(result["address_line_2"], expected_al2_type)
         assert isinstance(result["district"], expected_district_type)
@@ -405,11 +436,66 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
 def test_sales_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
-        [12833, 13, 13, 47241, Decimal("3.30"), 2, 360, "2025-03-02", "2025-02-28", 16],
-        [12834, 20, 10, 50975, Decimal("2.48"), 2, 441, "2025-03-02", "2025-03-02", 18],
-        [12835, 16, 5, 21962, Decimal("3.16"), 1, 354, "2025-02-27", "2025-03-02", 5],
-        [12836, 20, 3, 80088, Decimal("3.45"), 1, 474, "2025-03-02", "2025-03-02", 13],
-        [12837, 17, 2, 84063, Decimal("3.72"), 1, 210, "2025-03-02", "2025-03-01", 8],
+        [
+            12833,
+            13,
+            13,
+            47241,
+            Decimal("3.30"),
+            2,
+            360,
+            "2025-03-02",
+            "2025-02-28",
+            16,
+        ],
+        [
+            12834,
+            20,
+            10,
+            50975,
+            Decimal("2.48"),
+            2,
+            441,
+            "2025-03-02",
+            "2025-03-02",
+            18,
+        ],
+        [
+            12835,
+            16,
+            5,
+            21962,
+            Decimal("3.16"),
+            1,
+            354,
+            "2025-02-27",
+            "2025-03-02",
+            5,
+        ],
+        [
+            12836,
+            20,
+            3,
+            80088,
+            Decimal("3.45"),
+            1,
+            474,
+            "2025-03-02",
+            "2025-03-02",
+            13,
+        ],
+        [
+            12837,
+            17,
+            2,
+            84063,
+            Decimal("3.72"),
+            1,
+            210,
+            "2025-03-02",
+            "2025-03-01",
+            8,
+        ],
     ]
     expected_sales_order_id = int
     expected_staff_id = int
@@ -432,7 +518,14 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
         assert isinstance(result["unit_price"], expected_unit_price)
         assert isinstance(result["currency_id"], expected_currency_id)
         assert isinstance(result["design_id"], expected_design_id)
-        assert isinstance(result["agreed_delivery_date"], expected_agreed_delivery_date)
-        assert isinstance(result["agreed_payment_date"], expected_agreed_payment_date)
-        assert isinstance(result["agreed_delivery_location_id"], expected_agreed_delivery_location_id)
+        assert isinstance(
+            result["agreed_delivery_date"], expected_agreed_delivery_date
+        )
+        assert isinstance(
+            result["agreed_payment_date"], expected_agreed_payment_date
+        )
+        assert isinstance(
+            result["agreed_delivery_location_id"],
+            expected_agreed_delivery_location_id,
+        )
         assert len(result) == 10

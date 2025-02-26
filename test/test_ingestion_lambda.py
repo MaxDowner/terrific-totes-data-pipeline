@@ -1,4 +1,5 @@
-from src.ingestion_lambda import ingestion_lambda_handler
+# from src.ingestion_lambda import ingestion_lambda_handler
+
 
 def test_():
     assert True
