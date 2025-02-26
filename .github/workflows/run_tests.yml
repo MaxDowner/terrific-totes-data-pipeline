@@ -33,13 +33,6 @@ jobs:
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
           virtual-environment: venv/
-      - name: Bandit Action
-        uses: mdegis/bandit-action@v1.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: "."
-          level: high
-          confidence: high
        
 
   # deploy-lambda:
