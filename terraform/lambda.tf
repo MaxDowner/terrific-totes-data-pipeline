@@ -6,7 +6,7 @@ data "archive_file" "lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "ingest_group" {
-  name = "/aws/lambda/aws_lambda_function.lambda.${var.lambda_name}"
+  name = "/aws/lambda/toy_handler"
 }
 
 resource "aws_lambda_function" "toy_handler" {
@@ -49,5 +49,6 @@ resource "aws_lambda_layer_version" "toy_layer" {
   compatible_runtimes = [var.python_runtime]
   s3_key = "toy/layer.zip"
   s3_bucket           = aws_s3_bucket.ingestion_code_bucket.bucket
+  depends_on = [data.archive_file.layer, aws_s3_object.layer_code]
 }
 

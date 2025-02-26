@@ -14,6 +14,7 @@ resource "aws_cloudwatch_log_metric_filter" "error_metric" {
   name           = "ErrorCount"
   pattern        = "ERROR"
   log_group_name = "/aws/lambda/toy_handler"
+  depends_on = [aws_cloudwatch_log_group.ingest_group]
 
   metric_transformation {
     name      = "ErrorCount"
