@@ -27,3 +27,8 @@ variable "default_timeout" {
   type    = number
   default = 5
 }
+
+variable "email" {
+  type = string
+  default = "terrific.totes.05.coad@gmail.com"
+}

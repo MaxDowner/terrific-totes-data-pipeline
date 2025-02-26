@@ -41,7 +41,7 @@ resource "aws_sns_topic" "errorsOverTheLimit" {
 resource "aws_sns_topic_subscription" "lambda_error_email" {
   topic_arn = aws_sns_topic.errorsOverTheLimit.arn
   protocol  = "email"
-  endpoint  = "terrific.totes.05.coad@gmail.com"
+  endpoint  = var.email
 }
 
 # hi andrew :)
