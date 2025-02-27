@@ -14,6 +14,7 @@ resource "aws_s3_bucket_versioning" "ingestion_versioning" {
 
 resource "aws_s3_bucket_object_lock_configuration" "ingestion_object_lock" {
   bucket = aws_s3_bucket.ingestion_data_bucket.bucket
+  depends_on = [aws_s3_bucket_versioning.ingestion_versioning.arn]
 
   rule {
     default_retention {
