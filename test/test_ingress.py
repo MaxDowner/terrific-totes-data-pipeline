@@ -501,7 +501,7 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
     expected_staff_id = int
     expected_counterparty_id = int
     expected_units_sold = int
-    expected_unit_price = Decimal
+    expected_unit_price = str
     expected_currency_id = int
     expected_design_id = int
     expected_agreed_delivery_date = str
