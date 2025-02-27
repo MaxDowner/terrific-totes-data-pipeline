@@ -7,13 +7,13 @@ resource "aws_cloudwatch_event_rule" "scheduler" {
 
 resource "aws_cloudwatch_event_target" "lambda_target" {
     rule = aws_cloudwatch_event_rule.scheduler.name
-    arn = aws_lambda_function.toy_handler.arn
+    arn = aws_lambda_function.ingestion_lambda_handler_resource.arn
 }
 
 resource "aws_cloudwatch_log_metric_filter" "error_metric" {
   name           = "ErrorCount"
   pattern        = "ERROR"
-  log_group_name = "/aws/lambda/toy_handler"
+  log_group_name = "/aws/lambda/ingestion_lambda_handler"
   depends_on = [aws_cloudwatch_log_group.ingest_group]
 
   metric_transformation {

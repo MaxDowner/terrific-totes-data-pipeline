@@ -34,12 +34,12 @@ resource "aws_s3_bucket" "ingestion_code_bucket" {
 
 resource "aws_s3_object" "lambda_code" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-  key = "toy/function.zip"
-  source = "${path.module}/../function.zip"
+  key = "ingestion/function.zip"
+  source = "${path.module}/../ingestion_function.zip"
 }
 
 resource "aws_s3_object" "layer_code" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-  key = "toy/layer.zip"
+  key = "ingestion/layer.zip"
   source = "${path.module}/../layer.zip"
 }

@@ -15,7 +15,7 @@ variable "code_ingestion_bucket_prefix" {
 
 variable "lambda_name" {
   type    = string
-  default = "toy_handler"
+  default = "ingestion_lambda_handler"
 }
 
 variable "region_name" {
