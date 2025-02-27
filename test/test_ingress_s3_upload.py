@@ -4,9 +4,8 @@ import pytest
 import os
 from src.util.ingress_upload_to_s3 import upload_ingestion_to_s3
 from botocore.exceptions import ClientError
-import botocore
 import json
-from pprint import pprint
+
 
 @pytest.fixture(scope="function", autouse=True)
 def aws_credentials():
