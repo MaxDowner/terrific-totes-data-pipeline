@@ -1,5 +1,6 @@
 from src.util.filepath_from_timestamp import filename_from_timestamp
 
+
 class TestFilenameFromTimestampMethod:
     def test_returns_string_type(self):
         # Arrange
