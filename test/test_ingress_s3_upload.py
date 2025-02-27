@@ -6,6 +6,7 @@ from src.util.ingress_upload_to_s3 import upload_ingestion_to_s3
 from botocore.exceptions import ClientError
 import botocore
 import json
+from pprint import pprint
 
 @pytest.fixture(scope="function", autouse=True)
 def aws_credentials():
@@ -85,7 +86,5 @@ def test_upload_function_raises_exception_if_bucket_not_present():
                                                     dummy_object)
         err = exc.value.response["Error"]
         assert err["Message"] == 'The specified bucket does not exist'
-
-"""def test_upload_raise_a_client_error_if_invalid_client_call():
-    with mock_aws():
-        pass"""
+        
+        

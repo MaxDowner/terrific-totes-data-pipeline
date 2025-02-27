@@ -2,7 +2,7 @@ import boto3
 import os
 import logging
 from botocore.exceptions import ClientError
-# from src.util.ingress import ingress_handler
+
 
 def upload_ingestion_to_s3(s3_client, bucket_name, key, body_content):
     """
@@ -21,6 +21,7 @@ def upload_ingestion_to_s3(s3_client, bucket_name, key, body_content):
             Key=key,
             Body=body_content
         )
+   
     except ClientError as e:
        
         logging.error(f"Failed to upload data to s3:{str(e)}")
