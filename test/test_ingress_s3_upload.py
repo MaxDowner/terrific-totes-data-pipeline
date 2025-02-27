@@ -4,6 +4,7 @@ import pytest
 import os
 from src.util.ingress_upload_to_s3 import upload_ingestion_to_s3
 from botocore.exceptions import ClientError
+import botocore
 import json
 
 @pytest.fixture(scope="function", autouse=True)
@@ -63,8 +64,28 @@ def test_upload_function_writes_the_object_to_the_bucket():
 
 def test_upload_function_raises_exception_if_bucket_not_present():
     with mock_aws():
-        pass
+        # setup client
+        test_client = boto3.client('s3')
+        bucket_name = 'test_bucket1'
+        object_key = 'test/uploaded_object'
+        dummy_object = '{name: hello}'
+        fake_bucket_name = 'fake_bucket'
+        
+        # create real bucket
+        mock_bucket = test_client.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
+        )
 
-def test_upload_raise_a_client_error_if_invalid__client_call():
+        # try to upload a file to a fake bucket
+        with pytest.raises(ClientError) as exc:
+            function_call = upload_ingestion_to_s3(test_client,
+                                                    fake_bucket_name,
+                                                    object_key,
+                                                    dummy_object)
+        err = exc.value.response["Error"]
+        assert err["Message"] == 'The specified bucket does not exist'
+
+"""def test_upload_raise_a_client_error_if_invalid_client_call():
     with mock_aws():
-        pass
+        pass"""

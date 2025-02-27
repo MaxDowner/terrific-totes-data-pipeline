@@ -22,4 +22,8 @@ def upload_ingestion_to_s3(s3_client, bucket_name, key, body_content):
             Body=body_content
         )
     except ClientError as e:
+       
         logging.error(f"Failed to upload data to s3:{str(e)}")
+        raise e
+        
+        
