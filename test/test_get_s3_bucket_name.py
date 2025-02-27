@@ -1,4 +1,5 @@
 import os
+import boto3
 
 import pytest
 from moto import mock_aws
@@ -19,9 +20,15 @@ def test_returns_a_string():
     assert isinstance(get_s3_bucket_name("ingestion-"), str)
 
 
-def test_returns_a_string_starting_with_ingestion_live():
-    result = get_s3_bucket_name("ingestion-")
-    assert "ingestion-" in result
+def test_returns_a_string_starting_with_ingestion_live(aws_credentials):
+    with mock_aws():
+        test_client = boto3.client('s3')
+        test_client.create_bucket(
+            Bucket='ingestion-data-123456',
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
+        )
+        result = get_s3_bucket_name("ingestion-")
+        assert "ingestion-" in result
 
 
 def test_execption(aws_credentials):
