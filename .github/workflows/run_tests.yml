@@ -28,7 +28,12 @@ jobs:
           PG_PORT: ${{ secrets.PG_PORT }}    
           PG_PASSWORD: ${{ secrets.PG_PASSWORD }}    
           PG_HOST: ${{ secrets.PG_HOST }}    
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}         
+          PG_DATABASE: ${{ secrets.PG_DATABASE }}  
+      - name: pip audit
+        uses: pypa/gh-action-pip-audit@v1.1.0
+        with:
+          virtual-environment: venv/
+       
 
   # deploy-lambda:
   #   name: deploy-lambda
