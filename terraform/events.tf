@@ -44,5 +44,3 @@ resource "aws_sns_topic_subscription" "lambda_error_email" {
   protocol  = "email"
   endpoint  = var.email
 }
-
-# hi andrew :)
