@@ -142,6 +142,9 @@ def ingress_handler():
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now
                 )
+            if i == 5:
+                for row in updated_data:
+                    row[4] = str(row[4])
             table_updates = [dict(zip(column_list[i], row))
                              for row in updated_data]
             data_dump.append({table_list[i]: table_updates})
