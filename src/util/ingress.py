@@ -1,5 +1,5 @@
-from src.util.pg_connection import connect_to_db, close_connection
-from src.util.get_time_window import get_time_window
+from .pg_connection import connect_to_db, close_connection
+from .get_time_window import get_time_window
 
 query_list = [
     """SELECT currency_id, currency_code FROM currency
