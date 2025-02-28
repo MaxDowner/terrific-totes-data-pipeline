@@ -1,0 +1,22 @@
+data "archive_file" "util" {
+    type = "zip"
+    output_path = "${path.module}/../util.zip"
+    source_dir = "${path.module}/../packages/"
+    depends_on = [ null_resource.create_dependencies ]
+}
+
+resource "aws_lambda_layer_version" "util_layer" {
+  layer_name          = "util_layer"
+  compatible_runtimes = [var.python_runtime]
+  s3_key = aws_s3_object.utility_layer.key
+  s3_bucket           = aws_s3_bucket.ingestion_code_bucket.bucket
+  depends_on = [aws_s3_bucket.ingestion_code_bucket]
+}
+
+resource "null_resource" "create_dependencies" {
+  provisioner "local-exec" {
+    command = "cp -r ${path.module}/../src/util -t ${path.module}/../packages/python/src \n rm -rf ${path.module}/../packages/python/src/util/__pycache__"
+  }
+  triggers = {always_run = timestamp()}
+}
+
