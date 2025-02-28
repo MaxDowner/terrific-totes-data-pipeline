@@ -174,3 +174,4 @@ cython_debug/
 *.zip
 *.tfstate*
 **/.terraform*
+layer_dependencies

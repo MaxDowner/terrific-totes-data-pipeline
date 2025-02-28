@@ -38,10 +38,26 @@ resource "aws_s3_object" "lambda_code" {
   source = "${path.module}/../ingestion_function.zip"
 }
 
-resource "aws_s3_object" "layer_code" {
+# resource "aws_s3_object" "layer_code" {
+#   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
+#   key = "ingestion/layer.zip"
+#   source = "${path.module}/../layer.zip"
+# }
+
+resource "aws_s3_object" "lambda_layer" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-  key = "ingestion/layer.zip"
-  source = "${path.module}/../layer.zip"
+  key    = "layer/layer.zip"
+  source = data.archive_file.layer_code.output_path
+  # etag   = filemd5(data.archive_file.layer_code.output_path)
+  depends_on = [ data.archive_file.layer_code ]
+}
+
+resource "aws_s3_object" "utility_layer" {
+  bucket = aws_s3_bucket.ingestion_code_bucket.bucket
+  key = "layer/util.zip"
+  source = data.archive_file.util.output_path
+  etag = filemd5(data.archive_file.util.output_path)
+  depends_on = [ data.archive_file.util ]
 }
 
 resource "aws_s3_object" "utility_layer" {
