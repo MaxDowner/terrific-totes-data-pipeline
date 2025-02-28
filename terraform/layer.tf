@@ -1,6 +1,6 @@
 resource "null_resource" "create_dependencies" {
   provisioner "local-exec" {
-    command = "pip install -r ${path.module}/../lambda_requirements.txt -t ${path.module}/../dependencies/python"
+    command = "pip install -r ${path.module}/../lambda_requirements.txt -t ${path.module}/../layer_dependencies/python"
   }
 
   triggers = {
@@ -11,7 +11,7 @@ resource "null_resource" "create_dependencies" {
 data "archive_file" "layer_code" {
   type        = "zip"
   output_path = "${path.module}/../packages/layer/layer.zip"
-  source_dir  = "${path.module}/../dependencies"
+  source_dir  = "${path.module}/../layer_dependencies"
   depends_on = [null_resource.create_dependencies]
 }
 
