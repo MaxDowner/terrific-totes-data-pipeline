@@ -1,6 +1,6 @@
 data "archive_file" "util" {
     type = "zip"
-    output_path = "${path.module}/../util.zip"
+    output_path = "${path.module}/../layers/util.zip"
     source_dir = "${path.module}/../packages/"
     depends_on = [ null_resource.create_dependencies ]
 }
