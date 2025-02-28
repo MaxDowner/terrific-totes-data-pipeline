@@ -2,10 +2,10 @@ import json
 
 import boto3
 
-from src.util.ingress import ingress_handler
-from src.util.filepath_from_timestamp import filename_from_timestamp
-from src.util.get_s3_bucket_name import get_s3_bucket_name
-from src.util.ingress_upload_to_s3 import upload_ingestion_to_s3
+from .util.ingress import ingress_handler
+from .util.filepath_from_timestamp import filename_from_timestamp
+from .util.get_s3_bucket_name import get_s3_bucket_name
+from .util.ingress_upload_to_s3 import upload_ingestion_to_s3
 
 
 def ingestion_lambda_handler(event, context):
