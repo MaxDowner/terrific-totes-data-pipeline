@@ -17,7 +17,7 @@ resource "aws_lambda_function" "ingestion_lambda_handler_resource" {
   handler = "ingestion_lambda.ingestion_lambda_handler"
   timeout =  200 
   #TODO: Connect the layer which is outlined above
-  layers = [aws_lambda_layer_version.ingestion_lambda_layer_resource.arn]
+  layers = [aws_lambda_layer_version.dependencies.arn]
   depends_on = [
     aws_iam_role_policy_attachment.lambda_cw_policy_attachment,
     aws_cloudwatch_log_group.ingest_group,
@@ -35,20 +35,5 @@ resource "aws_lambda_permission" "allow_scheduler" {
   principal = "events.amazonaws.com"
   source_arn = aws_cloudwatch_event_rule.scheduler.arn
   source_account = data.aws_caller_identity.current.account_id
-}
-
-data "archive_file" "layer" {
-  type = "zip"
-  output_file_mode = "0666"
-  source_dir = "${path.module}/../src/util/"
-  output_path = "${path.module}/../layer.zip"
-}
-
-resource "aws_lambda_layer_version" "ingestion_lambda_layer_resource" {
-  layer_name          = "ingestion_lambda_layer"
-  compatible_runtimes = [var.python_runtime]
-  s3_key = "ingestion/layer.zip"
-  s3_bucket           = aws_s3_bucket.ingestion_code_bucket.bucket
-  depends_on = [data.archive_file.layer, aws_s3_object.layer_code]
 }
 
