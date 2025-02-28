@@ -12,12 +12,12 @@ jobs:
         uses: actions/checkout@v4
       - name: setup python
         uses: actions/setup-python@v5
-        with: 
-          python-version: '3.12.6' 
+        with:
+          python-version: ' 3.12.6'
       - name: install requirements
         run: make requirements
-      - name: run dev-setup
-        run : make dev-setup
+      - name: dev setup
+        run: make dev-setup
       - name: run-all-checks
         run: make run-checks
         env:
@@ -25,7 +25,11 @@ jobs:
           PG_PORT: ${{ secrets.PG_PORT }}    
           PG_PASSWORD: ${{ secrets.PG_PASSWORD }}    
           PG_HOST: ${{ secrets.PG_HOST }}    
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}    
+          PG_DATABASE: ${{ secrets.PG_DATABASE }}  
+      - name: pip audit
+        uses: pypa/gh-action-pip-audit@v1.1.0
+        with:
+          virtual-environment: venv/ 
 
   deploy-lambda:
     name: deploy-lambda
