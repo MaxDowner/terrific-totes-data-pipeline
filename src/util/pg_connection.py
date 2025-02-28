@@ -8,14 +8,14 @@ load_dotenv()
 
 
 def connect_to_db():
-    """Connects to the 'totesys' database using PG8000, 
+    """Connects to the 'totesys' database using PG8000,
     and environment variables using Python Dotenv."""
     return Connection(
         user=os.getenv("PG_USER"),
         password=str(os.getenv("PG_PASSWORD")),
         database=os.getenv("PG_DATABASE"),
         host=os.getenv("PG_HOST"),
-        port=int(os.getenv("PG_PORT")),
+        port=int(os.getenv("PG_PORT"))
     )
 
 

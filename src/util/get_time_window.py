@@ -16,5 +16,5 @@ def get_time_window():
         last_line = file.readlines()[-1]
         csv_writer = csv.writer(file, delimiter=",")
         csv_writer.writerow([time, "None"])
-    
+
     return (last_line.split(',')[0], str(time))
