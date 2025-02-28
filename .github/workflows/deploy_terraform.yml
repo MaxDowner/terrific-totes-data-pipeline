@@ -59,9 +59,6 @@ jobs:
       - name: terraform plan
         working-directory: terraform
         run: terraform plan
-      - name: terraform format
-        working-directory: terraform
-        run: terraform fmt
       - name: terraform apply
         working-directory: terraform
         run: terraform apply -auto-approve
