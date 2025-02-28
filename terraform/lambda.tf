@@ -17,7 +17,7 @@ resource "aws_lambda_function" "ingestion_lambda_handler_resource" {
   handler = "ingestion_lambda.ingestion_lambda_handler"
   timeout =  200 
   #TODO: Connect the layer which is outlined above
-  layers = [aws_lambda_layer_version.ingestion_lambda_layer_resource.arn]
+  layers = [aws_lambda_layer_version.dependencies.arn]
   depends_on = [
     aws_iam_role_policy_attachment.lambda_cw_policy_attachment,
     aws_cloudwatch_log_group.ingest_group,

@@ -1,10 +1,10 @@
 resource "null_resource" "create_dependencies" {
   provisioner "local-exec" {
-    command = "pip install -r ${path.module}/../requirements2.txt -t ${path.module}/../dependencies/python"
+    command = "pip install -r ${path.module}/../lambda_requirements.txt -t ${path.module}/../dependencies/python"
   }
 
   triggers = {
-    dependencies = filemd5("${path.module}/../requirements2.txt")
+    dependencies = filemd5("${path.module}/../lambda_requirements.txt")
   }
 }
 
@@ -19,6 +19,7 @@ resource "aws_lambda_layer_version" "dependencies" {
   layer_name = "Dependency"
   s3_bucket  = aws_s3_object.lambda_layer.bucket
   s3_key     = aws_s3_object.lambda_layer.key
+  depends_on = [data.archive_file.layer_code, aws_s3_object.lambda_layer]
 }
 
 # data "archive_file" "layer" {
