@@ -4,7 +4,7 @@ import pytest
 import boto3
 # import moto
 
-from src.util.pg_connection_aws import connect_to_db_AWS, close_connection_AWS
+from src.util.pg_connection_aws import connect_to_db, close_connection
 
 
 @pytest.fixture(scope="function")
@@ -26,7 +26,7 @@ def test_connect_to_db_connects():
         service_name='secretsmanager',
         region_name=region_name
     )
-    assert connect_to_db_AWS(client, secret_name)
+    assert connect_to_db(client, secret_name)
 
 
 def test_connect_to_db_fails_with_wrong_details():
@@ -42,10 +42,10 @@ def test_connect_to_db_fails_with_wrong_details():
     db = None
     try:
         with pytest.raises(Exception):
-            db = connect_to_db_AWS(client, "secret")
+            db = connect_to_db(client, "secret")
     finally:
         if db:
-            close_connection_AWS(db)
+            close_connection(db)
 
 
 def test_close_connection():
@@ -58,9 +58,9 @@ def test_close_connection():
         service_name='secretsmanager',
         region_name=region_name
     )
-    db = connect_to_db_AWS(client, secret_name)
+    db = connect_to_db(client, secret_name)
     result = db.run("SELECT * FROM STAFF")
     assert isinstance(result, list)
-    close_connection_AWS(db)
+    close_connection(db)
     with pytest.raises(Exception):
         db.run("SELECT * FROM STAFF")

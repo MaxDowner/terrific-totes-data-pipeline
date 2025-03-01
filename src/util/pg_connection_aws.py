@@ -7,7 +7,7 @@ from src.util.get_secret import get_secret
 logger = logging.getLogger("PGConnectionLogger")
 logger.setLevel(logging.INFO)
 
-def connect_to_db_AWS(sm_client, secret_details):
+def connect_to_db(sm_client, secret_details):
     """Connects to the 'totesys' database using PG8000,
     and environment variables using Python Dotenv."""
     user_details = get_secret(sm_client, secret_details)
@@ -23,6 +23,6 @@ def connect_to_db_AWS(sm_client, secret_details):
     )
 
 
-def close_connection_AWS(db):
+def close_connection(db):
     logger.info(f"Closing connection to remote database")
     db.close()
