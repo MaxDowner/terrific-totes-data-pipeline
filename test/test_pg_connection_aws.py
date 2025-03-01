@@ -1,5 +1,3 @@
-import os
-
 import pytest
 import boto3
 # import moto
@@ -27,7 +25,7 @@ def test_connect_to_db_fails_with_wrong_details():
     db = None
     try:
         with pytest.raises(Exception):
-            db = connect_to_db({"username" : "not this"})
+            db = connect_to_db({"username": "not this"})
     finally:
         if db:
             close_connection(db)

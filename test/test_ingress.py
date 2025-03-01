@@ -4,10 +4,10 @@ from unittest.mock import patch
 
 import boto3
 import pytest
-from moto import mock_aws
 
 from src.util.ingress import ingress_handler
 from src.util.get_secret import get_secret
+
 
 @pytest.fixture(scope="function")
 def aws_credentials():  # credentials required for testing
@@ -17,16 +17,15 @@ def aws_credentials():  # credentials required for testing
     os.environ["AWS_SESSION_TOKEN"] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
 
+
 secret_name = "Tote-DB"
 region_name = "eu-west-2"
 
 # Create a Secrets Manager client
 session = boto3.session.Session()
-client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
+client = session.client(service_name="secretsmanager", region_name=region_name)
 db_details = get_secret(client, "Tote-DB")
+
 
 @patch("src.util.pg_connection_aws.Connection.run")
 def test_currency_data_query_returns_correct_scaffold(mock_query):
@@ -43,8 +42,6 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
         assert isinstance(result["currency_code"], expected_code_type)
         assert len(result) == 2
         assert len(result["currency_code"]) == 3
-
-
 
 
 @patch("src.util.pg_connection_aws.Connection.run")

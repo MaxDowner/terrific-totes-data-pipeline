@@ -42,10 +42,9 @@ def test_get_secret_invalid(aws_credentials):
         with pytest.raises(ClientError):
             get_secret(client, "ProdSecrets")
 
+
 def test_get_secret_live():
-    secret_name = "test-secret"
-    region_name = "eu-west-2"
     # Create a Secrets Manager client
-    client = boto3.client('secretsmanager')
-    result = get_secret(client, 'test')
-    assert result == 'test'
+    client = boto3.client("secretsmanager")
+    result = get_secret(client, "test")
+    assert result == "test"

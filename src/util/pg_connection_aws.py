@@ -2,14 +2,21 @@ import logging
 
 from pg8000.native import Connection
 
-from src.util.get_secret import get_secret
 
 logger = logging.getLogger("PGConnectionLogger")
 logger.setLevel(logging.INFO)
 
-def connect_to_db(db_details):
-    """Connects to the 'totesys' database using PG8000,
-    and environment variables using Python Dotenv."""
+
+def connect_to_db(db_details: dict):
+    """connects to postgres db using PG8000
+    use secret manager util to get db_details
+
+    Args:
+        db_details (dict): dict containing login details
+
+    Returns:
+        class: PG8000 connection
+    """
     if not db_details:
         logger.error('ERROR - Could not retrieve secret details!')
     logger.info(f"Connecting to remote database {db_details['dbname']}")
@@ -23,5 +30,10 @@ def connect_to_db(db_details):
 
 
 def close_connection(db):
-    logger.info(f"Closing connection to remote database")
+    """closes the db
+
+    Args:
+        db (pg8000): dabase connection
+    """
+    logger.info("Closing connection to remote database")
     db.close()

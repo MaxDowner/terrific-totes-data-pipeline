@@ -1,5 +1,3 @@
-import boto3
-
 from src.util.pg_connection_aws import connect_to_db, close_connection
 from src.util.get_time_window import get_time_window
 
