@@ -1,5 +1,6 @@
 from .pg_connection import connect_to_db, close_connection
-from .get_time_window import get_time_window
+from .retrieve_time_window import retrieve_time_window
+
 
 query_list = [
     """SELECT currency_id, currency_code FROM currency
@@ -134,28 +135,22 @@ def ingress_handler():
     data_dump = []
     try:
         db = connect_to_db()
-        time_last, time_now = get_time_window()
-        # print(time_last, time_now)
-        # for testing to get all data, remove on prod
-        # time_last = "1970-01-01 00:00:00.000"
+        time_last, time_now = retrieve_time_window()
         for i in range(len(query_list)):
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now
                 )
-            if i == 5:
-                for row in updated_data:
+            for row in updated_data:
+                if i == 5:
                     row[4] = str(row[4])
             table_updates = [dict(zip(column_list[i], row))
                              for row in updated_data]
             data_dump.append({table_list[i]: table_updates})
         data_dump.append({"time_of_update": time_now})
-
     except Exception:
         # log failure here
         pass
-
     finally:
         if db:
             close_connection(db)
-
     return data_dump
