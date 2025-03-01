@@ -7,19 +7,18 @@ from src.util.get_secret import get_secret
 logger = logging.getLogger("PGConnectionLogger")
 logger.setLevel(logging.INFO)
 
-def connect_to_db(sm_client, secret_details):
+def connect_to_db(db_details):
     """Connects to the 'totesys' database using PG8000,
     and environment variables using Python Dotenv."""
-    user_details = get_secret(sm_client, secret_details)
-    if not user_details:
+    if not db_details:
         logger.error('ERROR - Could not retrieve secret details!')
-    logger.info(f"Connecting to remote database {user_details['dbname']}")
+    logger.info(f"Connecting to remote database {db_details['dbname']}")
     return Connection(
-        user=user_details['username'],
-        password=user_details['password'],
-        database=user_details['dbname'],
-        host=user_details['host'],
-        port=user_details['port']
+        user=db_details['username'],
+        password=db_details['password'],
+        database=db_details['dbname'],
+        host=db_details['host'],
+        port=db_details['port']
     )
 
 

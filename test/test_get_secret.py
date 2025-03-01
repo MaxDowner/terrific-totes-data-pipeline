@@ -47,9 +47,5 @@ def test_get_secret_live():
     region_name = "eu-west-2"
     # Create a Secrets Manager client
     client = boto3.client('secretsmanager')
-    print(dir(client))
-    response = client.get_secret_value(
-    SecretId='test-secret')
-    print(response, "<<<<<<<<<<<<")
     result = get_secret(client, 'test')
     assert result == 'test'
