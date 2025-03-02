@@ -16,13 +16,13 @@ def get_time_window(s3_client, bucket_name: str, log_key: str):
     Returns:
         tuple: (time_last: str, time_current: str)
     """
-    s3_client.download_file(bucket_name, log_key, 'logs/last_run_s3.csv')
+    s3_client.download_file(bucket_name, log_key, '/tmp/last_run_s3.csv')
     time = datetime.now()
 
-    with open('logs/last_run_s3.csv', 'r+') as file:
+    with open('/tmp/last_run_s3.csv', 'r+') as file:
         last_line = file.readlines()[-1]
         csv_writer = csv.writer(file, delimiter=",")
         csv_writer.writerow([time, "None"])
 
-    s3_client.upload_file('logs/last_run_s3.csv', bucket_name, log_key)
+    s3_client.upload_file('/tmp/last_run_s3.csv', bucket_name, log_key)
     return (last_line.split(',')[0], str(time))
