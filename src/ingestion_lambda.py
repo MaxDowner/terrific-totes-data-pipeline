@@ -26,7 +26,7 @@ def ingestion_lambda_handler(event, context):
 
     # remote last runs log file / time windows
     bucket_name_logs = "totes-s3-logs"
-    object_key = "logs/last_run.scv"
+    object_key = "logs/last_run.csv"
 
     updated_data = ingress_handler(
         db_details, s3c, bucket_name_logs, object_key
