@@ -2,7 +2,7 @@ import json
 
 import boto3
 
-from src.util.ingress import ingress_handler
+from src.util.ingress_upload_to_s3 import ingress_handler
 from src.util.filepath_from_timestamp import filename_from_timestamp
 from src.util.get_s3_bucket_name import get_s3_bucket_name
 from src.util.ingress_upload_to_s3 import upload_ingestion_to_s3
