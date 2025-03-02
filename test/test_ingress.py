@@ -42,9 +42,7 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [[1, "GBP"], [2, "USD"], [3, "EUR"]]
         expected_id_type = int
         expected_code_type = str
@@ -74,9 +72,7 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [
             [
                 1,
@@ -256,7 +252,9 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
                 result["department_name"], expected_department_name_type
             )
             assert isinstance(result["location"], expected_location_type)
-            assert isinstance(result["email_address"], expected_email_address_type)
+            assert isinstance(
+                result["email_address"], expected_email_address_type
+            )
             assert len(result) == 6
             assert result["email_address"].count("@") == 1
 
@@ -276,9 +274,7 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [
             [501, "Granite", "/boot/defaults", "granite-20240813-sy9h.json"],
             [502, "Soft", "/usr/share", "soft-20240427-lrgo.json"],
@@ -328,7 +324,9 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
         for result in results[2]["design"]:
             assert isinstance(result["design_id"], expected_id_type)
             assert isinstance(result["design_name"], expected_design_name_type)
-            assert isinstance(result["file_location"], expected_file_location_type)
+            assert isinstance(
+                result["file_location"], expected_file_location_type
+            )
             assert isinstance(result["file_name"], expected_file_name_type)
             assert len(result) == 4
             assert result["file_location"][0] == "/"
@@ -337,7 +335,7 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
 
 @patch("src.util.pg_connection_aws.Connection.run")
 def test_address_data_query_returns_correct_scaffold(mock_query):
-     # Arrange
+    # Arrange
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
@@ -350,9 +348,7 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [
             [
                 26,
@@ -430,7 +426,7 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
 
 @patch("src.util.pg_connection_aws.Connection.run")
 def test_counterparty_data_query_returns_correct_scaffold(mock_query):
-     # Arrange
+    # Arrange
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
@@ -443,9 +439,7 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [
             [
                 16,
@@ -532,7 +526,7 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
 
 @patch("src.util.pg_connection_aws.Connection.run")
 def test_sales_data_query_returns_correct_scaffold(mock_query):
-     # Arrange
+    # Arrange
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
@@ -545,9 +539,7 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         # Upload a file to the bucket
-        test_s3.upload_file(
-            "logs/last_run_test.csv", bucket_name, object_key
-        )
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
         mock_query.return_value = [
             [
                 12833,
@@ -624,9 +616,13 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
         results = ingress_handler(db_details, test_s3, bucket_name, object_key)
         # Assert
         for result in results[5]["sales_order"]:
-            assert isinstance(result["sales_order_id"], expected_sales_order_id)
+            assert isinstance(
+                result["sales_order_id"], expected_sales_order_id
+            )
             assert isinstance(result["staff_id"], expected_staff_id)
-            assert isinstance(result["counterparty_id"], expected_counterparty_id)
+            assert isinstance(
+                result["counterparty_id"], expected_counterparty_id
+            )
             assert isinstance(result["units_sold"], expected_units_sold)
             assert isinstance(result["unit_price"], expected_unit_price)
             assert isinstance(result["currency_id"], expected_currency_id)
