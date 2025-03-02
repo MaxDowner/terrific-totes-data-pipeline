@@ -79,9 +79,9 @@ def test_returns_valid_datetime_format():
         # print(result)
         format = "%Y-%m-%d %H:%M:%S.%f"
         # not liking the 1970 format???
-        # print(result[0])
-        # date_1_formatted = datetime.strptime(result[0], format)
-        # print(date_1_formatted)
+        print(result[0])
+        date_1_formatted = datetime.strptime(result[0], format)
+        print(date_1_formatted)
         date_2_formatted = datetime.strptime(result[1], format)
         assert result[0] == "1970-01-01 00:00:00.000"
         assert result[1] == str(date_2_formatted)
@@ -117,10 +117,10 @@ def test_writes_to_csv():
             last_line_before = file.readline().decode()
         # run our cammand, updates the file
         get_time_window(test_client, bucket_name, object_key)
-        with open("logs/last_run_s3.csv", "r") as file:
+        with open("/tmp/last_run_s3.csv", "r") as file:
             lines_after = len(file.readlines())
             # updated_last_line = file.readlines()[-1]
-        with open("logs/last_run_s3.csv", "rb") as file:
+        with open("/tmp/last_run_s3.csv", "rb") as file:
             # Go to the end of the file before the last break-line
             file.seek(-2, os.SEEK_END)
             # Keep reading backward until you find the next break-line
@@ -191,7 +191,10 @@ def test_adds_time_and_None():
             "logs/last_run_test.csv", bucket_name, object_key
         )
         result = get_time_window(test_client, bucket_name, object_key)
-        with open("logs/last_run_s3.csv", "rb") as file:
+        test_client.download_file(
+            bucket_name, object_key, "logs/last_run_s3_downloaded_for_test.csv"
+        )
+        with open("logs/last_run_s3_downloaded_for_test.csv", "rb") as file:
             # Go to the end of the file before the last break-line
             file.seek(-2, os.SEEK_END)
             # Keep reading backward until you find the next break-line
