@@ -2,7 +2,7 @@ resource "aws_cloudwatch_event_rule" "scheduler" {
   # timings need changing to 15 min for actual lambda func!!!!!
   name = "lambda_scheduler"
   description = "triggers lambda func every minute"
-  schedule_expression = "rate(1 minute)"
+  schedule_expression = "rate(15 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_target" {
