@@ -19,7 +19,7 @@ variable "lambda_name" {
 }
 
 variable "region_name" {
-  type = string
+  type    = string
   default = "eu-west-2"
 }
 
@@ -29,6 +29,6 @@ variable "default_timeout" {
 }
 
 variable "email" {
-  type = string
+  type    = string
   default = "terrific.totes.05.coad@gmail.com"
 }

@@ -1,8 +1,8 @@
 resource "aws_s3_bucket" "ingestion_data_bucket" {
-    bucket_prefix = var.data_ingestion_bucket_prefix
-    tags = {
-        bucket_use = "stores ingested data"
-    }
+  bucket_prefix = var.data_ingestion_bucket_prefix
+  tags = {
+    bucket_use = "stores ingested data"
+  }
 }
 # THE TWO RESOURCES BELOW, I believe versioning is required for object lock
 resource "aws_s3_bucket_versioning" "ingestion_versioning" {
@@ -13,7 +13,7 @@ resource "aws_s3_bucket_versioning" "ingestion_versioning" {
 }
 
 resource "aws_s3_bucket_object_lock_configuration" "ingestion_object_lock" {
-  bucket = aws_s3_bucket.ingestion_data_bucket.bucket
+  bucket     = aws_s3_bucket.ingestion_data_bucket.bucket
   depends_on = [aws_s3_bucket_versioning.ingestion_versioning]
 
   rule {
@@ -26,18 +26,18 @@ resource "aws_s3_bucket_object_lock_configuration" "ingestion_object_lock" {
 }
 # THE TWO RESOURCES ABOVE
 resource "aws_s3_bucket" "ingestion_code_bucket" {
-    bucket_prefix = var.code_ingestion_bucket_prefix
-    tags = {
-        bucket_use = "ingests data"
-    }
+  bucket_prefix = var.code_ingestion_bucket_prefix
+  tags = {
+    bucket_use = "ingests data"
+  }
 }
 
 resource "aws_s3_object" "lambda_code" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-  key = "ingestion/function.zip"
+  key    = "ingestion/function.zip"
   # etag = filemd5(data.archive_file.lambda.output_path) 
-  source = data.archive_file.lambda.output_path
-  depends_on = [ data.archive_file.lambda ]
+  source     = data.archive_file.lambda.output_path
+  depends_on = [data.archive_file.lambda]
 }
 
 resource "aws_s3_object" "lambda_layer" {
@@ -45,13 +45,13 @@ resource "aws_s3_object" "lambda_layer" {
   key    = "layer/layer.zip"
   source = data.archive_file.layer_code.output_path
   # etag   = filemd5(data.archive_file.layer_code.output_path)
-  depends_on = [ data.archive_file.layer_code ]
+  depends_on = [data.archive_file.layer_code]
 }
 
 resource "aws_s3_object" "utility_layer" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-  key = "layer/util.zip"
+  key    = "layer/util.zip"
   source = data.archive_file.util.output_path
   # etag = filemd5(data.archive_file.util.output_path)
-  depends_on = [ data.archive_file.util ]
+  depends_on = [data.archive_file.util]
 }
