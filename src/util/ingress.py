@@ -1,4 +1,4 @@
-from src.util.pg_connection import connect_to_db, close_connection
+from src.util.pg_connection_aws import connect_to_db, close_connection
 from src.util.get_time_window import get_time_window
 
 query_list = [
@@ -120,7 +120,7 @@ column_list = [
 ]
 
 
-def ingress_handler():
+def ingress_handler(db_details):
     """util func that connects to the db
     logs time in csv log
     checks for updated data
@@ -133,7 +133,7 @@ def ingress_handler():
     db = None
     data_dump = []
     try:
-        db = connect_to_db()
+        db = connect_to_db(db_details)
         time_last, time_now = get_time_window()
         # print(time_last, time_now)
         # for testing to get all data, remove on prod

@@ -1,17 +1,40 @@
+import os
 from decimal import Decimal
 from unittest.mock import patch
 
+import boto3
+import pytest
+
 from src.util.ingress import ingress_handler
+from src.util.get_secret import get_secret
 
 
-@patch("src.util.pg_connection.Connection.run")
+@pytest.fixture(scope="function")
+def aws_credentials():  # credentials required for testing
+    os.environ["AWS_ACCESS_KEY_ID"] = "testing"
+    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
+    os.environ["AWS_SECURITY_TOKEN"] = "testing"
+    os.environ["AWS_SESSION_TOKEN"] = "testing"
+    os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+
+
+secret_name = "Tote-DB"
+region_name = "eu-west-2"
+
+# Create a Secrets Manager client
+session = boto3.session.Session()
+client = session.client(service_name="secretsmanager", region_name=region_name)
+db_details = get_secret(client, "Tote-DB")
+
+
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_currency_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [[1, "GBP"], [2, "USD"], [3, "EUR"]]
     expected_id_type = int
     expected_code_type = str
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
 
     for result in results[0]["currency"]:
@@ -21,7 +44,7 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
         assert len(result["currency_code"]) == 3
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_staff_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
@@ -193,7 +216,7 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
     expected_location_type = str
     expected_email_address_type = str
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
     for result in results[1]["staff"]:
         assert isinstance(result["staff_id"], expected_id_type)
@@ -208,7 +231,7 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
         assert result["email_address"].count("@") == 1
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_design_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
@@ -255,7 +278,7 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
     expected_file_location_type = str
     expected_file_name_type = str
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
     for result in results[2]["design"]:
         assert isinstance(result["design_id"], expected_id_type)
@@ -267,7 +290,7 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
         assert "." in result["file_name"]
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_address_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
@@ -331,7 +354,7 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
     expected_country_type = str
     expected_phone_type = str
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
     for result in results[3]["address"]:
         assert isinstance(result["address_id"], expected_id_type)
@@ -345,7 +368,7 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
         assert len(result) == 8
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_counterparty_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
@@ -415,7 +438,7 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
     expected_country_type = str
     expected_phone_type = str
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
     for result in results[4]["counterparty"]:
         assert isinstance(result["counterparty_id"], expected_id_type)
@@ -432,7 +455,7 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
         assert len(result) == 9
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_sales_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     mock_query.return_value = [
@@ -508,7 +531,7 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
     expected_agreed_payment_date = str
     expected_agreed_delivery_location_id = int
     # Act
-    results = ingress_handler()
+    results = ingress_handler(db_details)
     # Assert
     for result in results[5]["sales_order"]:
         assert isinstance(result["sales_order_id"], expected_sales_order_id)
