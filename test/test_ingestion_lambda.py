@@ -45,7 +45,7 @@ def test_runs_ingress_handler(mocked_ingress):
             {"time_of_update": "1970-01-01 00:00:00.000"},
         ]
         test_client = boto3.client("s3")
-        bucket_name = "ingestion-data-123456"
+        bucket_name = "ingested-data"
         # Create a mock Bucket
         test_client.create_bucket(
             Bucket=bucket_name,
@@ -92,13 +92,13 @@ def test_runs_filename_from_timestamp_once(
             {"time_of_update": "1970-01-01 00:00:00.000"},
         ]
         test_client = boto3.client("s3")
-        bucket_name = "ingestion-data-123456"
+        bucket_name = "ingested-data"
         # Create a mock Bucket
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
-        mocked_filename_from_timestamp.return_value = "/1970/01/01/00/00-00"
+        mocked_filename_from_timestamp.return_value = "1970/01/01/00/00-00"
         ingestion_lambda_handler({}, {})
         mocked_filename_from_timestamp.assert_called_once()
 
@@ -155,7 +155,7 @@ def test_data_uploaded_to_bucket(mocked_ingress):
             {"time_of_update": "1970-01-01 00:00:00.000"},
         ]
         test_client = boto3.client("s3")
-        bucket_name = "ingestion-data-123456"
+        bucket_name = "ingested-data"
         # Create a mock Bucket
         test_client.create_bucket(
             Bucket=bucket_name,
