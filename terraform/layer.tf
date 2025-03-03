@@ -20,5 +20,6 @@ resource "aws_lambda_layer_version" "dependencies" {
   s3_bucket  = aws_s3_object.lambda_layer.bucket
   s3_key     = aws_s3_object.lambda_layer.key
   depends_on = [data.archive_file.layer_code, aws_s3_object.lambda_layer]
+  source_code_hash = filebase64sha256(data.archive_file.layer_code.output_path)
 }
 

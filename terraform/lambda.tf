@@ -16,6 +16,7 @@ resource "aws_lambda_function" "ingestion_lambda_handler_resource" {
   role = aws_iam_role.lambda_role.arn
   handler = "ingestion_lambda.ingestion_lambda_handler"
   timeout =  200 
+  source_code_hash = filebase64sha256(data.archive_file.lambda.output_path)
   #TODO: Connect the layer which is outlined above
   layers = [aws_lambda_layer_version.dependencies.arn, aws_lambda_layer_version.util_layer.arn]
   depends_on = [
