@@ -5,7 +5,6 @@ resource "null_resource" "create_dependencies" {
 
   triggers = {
     always_run = timestamp()
-    # dependencies = filemd5("${path.module}/../lambda_requirements.txt")
   }
 }
 

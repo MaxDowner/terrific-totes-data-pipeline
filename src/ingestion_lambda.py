@@ -1,5 +1,4 @@
 import json
-
 import boto3
 
 from src.util.ingress import ingress_handler
@@ -10,6 +9,12 @@ from src.util.get_secret import get_secret
 
 
 def ingestion_lambda_handler(event, context):
+    """
+    Checks for updates in the live database and
+    extracts new data and processes the data into
+    a JSON output >> sends JSON to 'Ingested-Data' buckets
+    """
+
     # get db details
     secret_name = "Tote-DB"
     region_name = "eu-west-2"

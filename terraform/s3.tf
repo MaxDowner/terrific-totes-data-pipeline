@@ -40,12 +40,6 @@ resource "aws_s3_object" "lambda_code" {
   depends_on = [ data.archive_file.lambda ]
 }
 
-# resource "aws_s3_object" "layer_code" {
-#   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
-#   key = "ingestion/layer.zip"
-#   source = "${path.module}/../layer.zip"
-# }
-
 resource "aws_s3_object" "lambda_layer" {
   bucket = aws_s3_bucket.ingestion_code_bucket.bucket
   key    = "layer/layer.zip"
