@@ -2,7 +2,7 @@ data "archive_file" "lambda" {
   type             = "zip"
   output_file_mode = "0666"
   source_file      = "${path.module}/../src/ingestion_lambda.py"
-  output_path      = "${path.module}/../ingestion_function.zip"
+  output_path      = "${path.module}/../deployment_files/ingestion_function.zip"
 }
 
 resource "aws_cloudwatch_log_group" "ingest_group" {
@@ -16,6 +16,7 @@ resource "aws_lambda_function" "ingestion_lambda_handler_resource" {
   role = aws_iam_role.lambda_role.arn
   handler = "ingestion_lambda.ingestion_lambda_handler"
   timeout =  200 
+  source_code_hash = filebase64sha256(data.archive_file.lambda.output_path)
   #TODO: Connect the layer which is outlined above
   layers = [aws_lambda_layer_version.dependencies.arn, aws_lambda_layer_version.util_layer.arn]
   depends_on = [
