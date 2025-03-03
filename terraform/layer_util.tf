@@ -1,6 +1,14 @@
+resource "null_resource" "create_utils" {
+  provisioner "local-exec" {
+    command = "cp -r ${path.module}/../src/util -t ${path.module}/../packages/python/src \n rm -rf ${path.module}/../packages/python/src/util/__pycache__"
+  }
+  triggers = {always_run = timestamp()}
+}
+
+
 data "archive_file" "util" {
     type = "zip"
-    output_path = "${path.module}/../layers/util.zip"
+    output_path = "${path.module}/../deployment_files/ingestion_util_layer.zip"
     source_dir = "${path.module}/../packages/"
     depends_on = [ null_resource.create_utils ]
 }
@@ -13,10 +21,4 @@ resource "aws_lambda_layer_version" "util_layer" {
   depends_on = [aws_s3_bucket.ingestion_code_bucket]
 }
 
-resource "null_resource" "create_utils" {
-  provisioner "local-exec" {
-    command = "cp -r ${path.module}/../src/util -t ${path.module}/../packages/python/src \n rm -rf ${path.module}/../packages/python/src/util/__pycache__"
-  }
-  triggers = {always_run = timestamp()}
-}
 

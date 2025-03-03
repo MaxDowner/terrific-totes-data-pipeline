@@ -2,7 +2,7 @@ data "archive_file" "lambda" {
   type             = "zip"
   output_file_mode = "0666"
   source_file      = "${path.module}/../src/ingestion_lambda.py"
-  output_path      = "${path.module}/../ingestion_function.zip"
+  output_path      = "${path.module}/../deployment_files/ingestion_function.zip"
 }
 
 resource "aws_cloudwatch_log_group" "ingest_group" {
