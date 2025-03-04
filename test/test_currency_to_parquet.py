@@ -1,11 +1,12 @@
 from src.util_2.currency_to_parquet import currency_to_parquet
-import json 
-import requests
+
+# import requests
 import os
-from pyarrow import json as pj
+
+# from pyarrow import json as pj
 import pyarrow.parquet as pq
 
-# test for 200 response code 
+# test for 200 response code
 
 # def test_currency_to_parquet_responds_with_a_200():
 #     # arrange
@@ -27,11 +28,12 @@ import pyarrow.parquet as pq
 # test file is created
 # test it's a parquet file
 
+
 def test_currency_to_parquet_returns_a_pq_file():
     # arrange
     if os.path.exists("/tmp/formatted_dim_currency.parquet"):
         os.remove("/tmp/formatted_dim_currency.parquet")
-    input_data = [{'currency_id' : 1, 'currency_code' : 'USD'}]
+    input_data = [{"currency_id": 1, "currency_code": "USD"}]
     # act
     currency_to_parquet(input_data)
     # assert
@@ -41,7 +43,7 @@ def test_currency_to_parquet_returns_a_pq_file():
 def test_pq_file_is_readable():
     if os.path.exists("/tmp/formatted_dim_currency.parquet"):
         os.remove("/tmp/formatted_dim_currency.parquet")
-    input_data = [{'currency_id' : 1, 'currency_code' : 'USD'}]
+    input_data = [{"currency_id": 1, "currency_code": "USD"}]
     currency_to_parquet(input_data)
     # with open("/tmp/formatted_dim_staff.parquet", 'r') as f:
     #     pass
@@ -53,12 +55,15 @@ def test_pq_file_is_readable():
     assert metadata.num_columns == 3
     assert metadata.num_rows == 1
 
+
 def test_pq_can_process_input_lists_with_length_greater_than_1():
     if os.path.exists("/tmp/formatted_dim_currency.parquet"):
         os.remove("/tmp/formatted_dim_currency.parquet")
-    input_data = [{'currency_id' : 1, 'currency_code' : 'GBP'},
-                  {'currency_id' : 2, 'currency_code' : 'USD'},
-                  {'currency_id' : 3, 'currency_code' : 'EUR'}]
+    input_data = [
+        {"currency_id": 1, "currency_code": "GBP"},
+        {"currency_id": 2, "currency_code": "USD"},
+        {"currency_id": 3, "currency_code": "EUR"},
+    ]
     currency_to_parquet(input_data)
     # with open("/tmp/formatted_dim_staff.parquet", 'r') as f:
     #     pass
