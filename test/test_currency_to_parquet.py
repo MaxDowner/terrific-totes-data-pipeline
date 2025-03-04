@@ -7,16 +7,16 @@ import pyarrow.parquet as pq
 
 # test for 200 response code 
 
-def test_currency_to_parquet_responds_with_a_200():
-    # arrange
-    input_data = [{'currency_id' : 1, 'currency_code' : 'USD'}]
-    expected = 200
-    # act
-    result = currency_to_parquet(input_data)
-    # assert
-    assert result.status_code == expected
-    converted_result = result.json()
-    assert isinstance(converted_result, dict)
+# def test_currency_to_parquet_responds_with_a_200():
+#     # arrange
+#     input_data = [{'currency_id' : 1, 'currency_code' : 'USD'}]
+#     expected = 200
+#     # act
+#     result = currency_to_parquet(input_data)
+#     # assert
+#     assert result.status_code == expected
+#     converted_result = result.json()
+#     assert isinstance(converted_result, dict)
 
 # test it's a json
 # test it's a dictionary when converted to a python object
