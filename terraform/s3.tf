@@ -4,6 +4,14 @@ resource "aws_s3_bucket" "ingestion_data_bucket" {
     bucket_use = "stores ingested data"
   }
 }
+
+## supposedly allows eventbridge notifications
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket      = aws_s3_bucket.ingestion_data_bucket.id
+  eventbridge = true
+  ## depends_on aws_lambda_permission resource ???????
+}
+
 # THE TWO RESOURCES BELOW, I believe versioning is required for object lock
 resource "aws_s3_bucket_versioning" "ingestion_versioning" {
   bucket = aws_s3_bucket.ingestion_data_bucket.bucket
