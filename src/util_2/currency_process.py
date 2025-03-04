@@ -2,6 +2,7 @@
 import requests
 import json
 
+# just to commit
 
 # takes as argument list of new currencies
 # gets currency code from list
