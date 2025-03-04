@@ -171,6 +171,7 @@ cython_debug/
 .pypirc
 
 # terraform stuff
-*.zip
+# *.zip
 *.tfstate*
 **/.terraform*
+layer_dependencies

@@ -1,6 +1,5 @@
-from .pg_connection import connect_to_db, close_connection
-from .retrieve_time_window import retrieve_time_window
-
+from src.util.pg_connection_aws import connect_to_db, close_connection
+from src.util.get_time_window_s3 import get_time_window
 
 query_list = [
     """SELECT currency_id, currency_code FROM currency
@@ -121,7 +120,7 @@ column_list = [
 ]
 
 
-def ingress_handler():
+def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
     """util func that connects to the db
     logs time in csv log
     checks for updated data
@@ -134,8 +133,11 @@ def ingress_handler():
     db = None
     data_dump = []
     try:
-        db = connect_to_db()
-        time_last, time_now = retrieve_time_window()
+        db = connect_to_db(db_details)
+        time_last, time_now = get_time_window(s3_client, bucket_name, log_key)
+        # print(time_last, time_now)
+        # for testing to get all data, remove on prod
+        # time_last = "1970-01-01 00:00:00.000"
         for i in range(len(query_list)):
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now

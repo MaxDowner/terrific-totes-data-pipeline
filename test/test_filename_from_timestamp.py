@@ -16,14 +16,14 @@ class TestFilenameFromTimestampMethod:
         input_timestamp = "1992-11-16 17:45:11.848"
         expected = "1992"
         # Act
-        result = filename_from_timestamp(input_timestamp)[1:5]
+        result = filename_from_timestamp(input_timestamp)[0:4]
         # Assert
         assert expected == result
 
     def test_returns_correct_format(self):
         # Arrange
         input_timestamp = "1970-01-01 00:00:00.000"
-        expected = "/1970/01/01/00/00-00"
+        expected = "1970/01/01/00/00-00"
         # Act
         result = filename_from_timestamp(input_timestamp)
         # Assert

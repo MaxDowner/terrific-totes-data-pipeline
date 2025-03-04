@@ -1,11 +1,19 @@
 import os
+<<<<<<< HEAD
 from moto import mock_aws
 import boto3
 import pytest
+=======
+>>>>>>> main
 from decimal import Decimal
 from unittest.mock import patch
 
+import boto3
+import pytest
+from moto import mock_aws
+
 from src.util.ingress import ingress_handler
+from src.util.get_secret import get_secret
 
 
 @pytest.fixture(scope="function")
@@ -15,6 +23,41 @@ def aws_credentials():  # credentials required for testing
     os.environ["AWS_SECURITY_TOKEN"] = "testing"
     os.environ["AWS_SESSION_TOKEN"] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+<<<<<<< HEAD
+=======
+
+
+secret_name = "Tote-DB"
+region_name = "eu-west-2"
+
+# Create a Secrets Manager client
+session = boto3.session.Session()
+client = session.client(service_name="secretsmanager", region_name=region_name)
+db_details = get_secret(client, "Tote-DB")
+
+
+@patch("src.util.pg_connection_aws.Connection.run")
+def test_currency_data_query_returns_correct_scaffold(mock_query):
+    with mock_aws():
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+        mock_query.return_value = [[1, "GBP"], [2, "USD"], [3, "EUR"]]
+        expected_id_type = int
+        expected_code_type = str
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+>>>>>>> main
 
 
 @patch("src.util.pg_connection.Connection.run")
@@ -40,16 +83,31 @@ def test_currency_data_query_returns_correct_scaffold(mock_query,
             assert len(result["currency_code"]) == 3
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_staff_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     with mock_aws():
+<<<<<<< HEAD
         bucket_name = "ingestion-data-123"
         test_client = boto3.client('s3')
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
         )
+=======
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+>>>>>>> main
         mock_query.return_value = [
             [
                 1,
@@ -212,6 +270,7 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
                 "flavio.kulas@terrifictotes.com",
             ],
         ]
+<<<<<<< HEAD
         # Act
         results = ingress_handler()
         # Assert
@@ -222,20 +281,57 @@ def test_staff_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(result["department_name"], str)
             assert isinstance(result["location"], str)
             assert isinstance(result["email_address"], str)
+=======
+        expected_id_type = int
+        expected_first_name_type = str
+        expected_last_name_type = str
+        expected_department_name_type = str
+        expected_location_type = str
+        expected_email_address_type = str
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+        for result in results[1]["staff"]:
+            assert isinstance(result["staff_id"], expected_id_type)
+            assert isinstance(result["first_name"], expected_first_name_type)
+            assert isinstance(result["last_name"], expected_last_name_type)
+            assert isinstance(
+                result["department_name"], expected_department_name_type
+            )
+            assert isinstance(result["location"], expected_location_type)
+            assert isinstance(
+                result["email_address"], expected_email_address_type
+            )
+>>>>>>> main
             assert len(result) == 6
             assert result["email_address"].count("@") == 1
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_design_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     with mock_aws():
+<<<<<<< HEAD
         bucket_name = "ingestion-data-123"
         test_client = boto3.client('s3')
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
         )
+=======
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+>>>>>>> main
         mock_query.return_value = [
             [501, "Granite", "/boot/defaults", "granite-20240813-sy9h.json"],
             [502, "Soft", "/usr/share", "soft-20240427-lrgo.json"],
@@ -275,6 +371,7 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
             [534, "Cotton", "/var", "cotton-20240817-jfav.json"],
             [535, "Rubber", "/var/log", "rubber-20240724-nndw.json"],
         ]
+<<<<<<< HEAD
         # Act
         results = ingress_handler()
         # Assert
@@ -283,21 +380,52 @@ def test_design_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(result["design_name"], str)
             assert isinstance(result["file_location"], str)
             assert isinstance(result["file_name"], str)
+=======
+        expected_id_type = int
+        expected_design_name_type = str
+        expected_file_location_type = str
+        expected_file_name_type = str
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+        for result in results[2]["design"]:
+            assert isinstance(result["design_id"], expected_id_type)
+            assert isinstance(result["design_name"], expected_design_name_type)
+            assert isinstance(
+                result["file_location"], expected_file_location_type
+            )
+            assert isinstance(result["file_name"], expected_file_name_type)
+>>>>>>> main
             assert len(result) == 4
             assert result["file_location"][0] == "/"
             assert "." in result["file_name"]
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_address_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     with mock_aws():
+<<<<<<< HEAD
         bucket_name = "ingestion-data-123"
         test_client = boto3.client('s3')
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
         )
+=======
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+>>>>>>> main
         mock_query.return_value = [
             [
                 26,
@@ -350,6 +478,7 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
                 "1083 286132",
             ],
         ]
+<<<<<<< HEAD
         # Act
         results = ingress_handler()
         # Assert
@@ -362,19 +491,56 @@ def test_address_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(result["postal_code"], str)
             assert isinstance(result["country"], str)
             assert isinstance(result["phone"], str)
+=======
+        expected_id_type = int
+        expected_al1_type = str
+        expected_al2_type = str | None
+        expected_district_type = str | None
+        expected_city_type = str
+        expected_postal_code_type = str
+        expected_country_type = str
+        expected_phone_type = str
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+        for result in results[3]["address"]:
+            assert isinstance(result["address_id"], expected_id_type)
+            assert isinstance(result["address_line_1"], expected_al1_type)
+            assert isinstance(result["address_line_2"], expected_al2_type)
+            assert isinstance(result["district"], expected_district_type)
+            assert isinstance(result["city"], expected_city_type)
+            assert isinstance(result["postal_code"], expected_postal_code_type)
+            assert isinstance(result["country"], expected_country_type)
+            assert isinstance(result["phone"], expected_phone_type)
+>>>>>>> main
             assert len(result) == 8
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_counterparty_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     with mock_aws():
+<<<<<<< HEAD
         bucket_name = "ingestion-data-123"
         test_client = boto3.client('s3')
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
         )
+=======
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+>>>>>>> main
         mock_query.return_value = [
             [
                 16,
@@ -432,6 +598,7 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
                 "9621 880720",
             ],
         ]
+<<<<<<< HEAD
         # Act
         results = ingress_handler()
         # Assert
@@ -447,19 +614,60 @@ def test_counterparty_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(result["postal_code"], str)
             assert isinstance(result["country"], str)
             assert isinstance(result["phone"], str)
+=======
+        expected_id_type = int
+        expected_legal_name_type = str
+        expected_al1_type = str
+        expected_al2_type = str | None
+        expected_district_type = str | None
+        expected_city_type = str
+        expected_postal_code_type = str
+        expected_country_type = str
+        expected_phone_type = str
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+        for result in results[4]["counterparty"]:
+            assert isinstance(result["counterparty_id"], expected_id_type)
+            assert isinstance(
+                result["counterparty_legal_name"], expected_legal_name_type
+            )
+            assert isinstance(result["address_line_1"], expected_al1_type)
+            assert isinstance(result["address_line_2"], expected_al2_type)
+            assert isinstance(result["district"], expected_district_type)
+            assert isinstance(result["city"], expected_city_type)
+            assert isinstance(result["postal_code"], expected_postal_code_type)
+            assert isinstance(result["country"], expected_country_type)
+            assert isinstance(result["phone"], expected_phone_type)
+>>>>>>> main
             assert len(result) == 9
 
 
-@patch("src.util.pg_connection.Connection.run")
+@patch("src.util.pg_connection_aws.Connection.run")
 def test_sales_data_query_returns_correct_scaffold(mock_query):
     # Arrange
     with mock_aws():
+<<<<<<< HEAD
         bucket_name = "ingestion-data-123"
         test_client = boto3.client('s3')
         test_client.create_bucket(
             Bucket=bucket_name,
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
         )
+=======
+        # Arrange
+        test_s3 = boto3.client("s3")
+        bucket_name = "test_bucket1"
+        object_key = "logs/last_run.scv"
+
+        # Create a mock Bucket
+        test_s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        # Upload a file to the bucket
+        test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
+>>>>>>> main
         mock_query.return_value = [
             [
                 12833,
@@ -522,6 +730,7 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
                 8,
             ],
         ]
+<<<<<<< HEAD
         # Act
         results = ingress_handler()
         # Assert
@@ -542,5 +751,41 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(
                 result["agreed_delivery_location_id"],
                 int,
+=======
+        expected_sales_order_id = int
+        expected_staff_id = int
+        expected_counterparty_id = int
+        expected_units_sold = int
+        expected_unit_price = str
+        expected_currency_id = int
+        expected_design_id = int
+        expected_agreed_delivery_date = str
+        expected_agreed_payment_date = str
+        expected_agreed_delivery_location_id = int
+        # Act
+        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        # Assert
+        for result in results[5]["sales_order"]:
+            assert isinstance(
+                result["sales_order_id"], expected_sales_order_id
+            )
+            assert isinstance(result["staff_id"], expected_staff_id)
+            assert isinstance(
+                result["counterparty_id"], expected_counterparty_id
+            )
+            assert isinstance(result["units_sold"], expected_units_sold)
+            assert isinstance(result["unit_price"], expected_unit_price)
+            assert isinstance(result["currency_id"], expected_currency_id)
+            assert isinstance(result["design_id"], expected_design_id)
+            assert isinstance(
+                result["agreed_delivery_date"], expected_agreed_delivery_date
+            )
+            assert isinstance(
+                result["agreed_payment_date"], expected_agreed_payment_date
+            )
+            assert isinstance(
+                result["agreed_delivery_location_id"],
+                expected_agreed_delivery_location_id,
+>>>>>>> main
             )
             assert len(result) == 10
