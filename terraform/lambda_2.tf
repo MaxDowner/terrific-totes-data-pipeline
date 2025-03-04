@@ -13,19 +13,18 @@ resource "aws_lambda_function" "processing_lambda_handler_resource" {
   filename         = data.archive_file.lambda_2.output_path
   function_name    = var.lambda_2_name
   runtime          = var.python_runtime
-  ## iam role for lambda 2 will need to be changed when iam role created
-  role             = aws_iam_role.lambda_role.arn
+  role             = aws_iam_role.lambda_2_role.arn
   handler          = "processing_lambda.processing_lambda_handler"
   timeout          = 200
   source_code_hash = data.archive_file.lambda_2.output_base64sha256
-  #TODO: Connect the layer which is outlined above 
+  #TODO: layers section??
   layers = [aws_lambda_layer_version.dependencies.arn, aws_lambda_layer_version.util_layer.arn]
   depends_on = [
-    aws_iam_role_policy_attachment.lambda_cw_policy_attachment,
-    aws_cloudwatch_log_group.ingest_group,
+    aws_iam_role_policy_attachment.lambda_2_cw_policy_attachment,
+    aws_cloudwatch_log_group.processing_group,
   ]
   #   logging_config {
-  #     log_group = [aws_cloudwatch_log_group.ingest_group]
+  #     log_group = [aws_cloudwatch_log_group.processing_group]
   #     }
 }
 

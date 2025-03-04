@@ -36,6 +36,7 @@ resource "aws_iam_role" "lambda_role" {
 # }
 
 
+
 data "aws_iam_policy_document" "s3_data_policy_doc" {
   statement {
     actions = ["s3:*",
