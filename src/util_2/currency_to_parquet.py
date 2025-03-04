@@ -3,18 +3,16 @@ import json
 from pyarrow import json as pj
 import pyarrow.parquet as pq
 
-
-# takes as argument list of new currencies
-# gets currency code from list
-# gets big dict from currency api
-# uses code to access coresponding currency name from big dict of currencies
-# stores id, code, and name in 3 variables 
-# puts all three variables into dim table of dim_currency
-# id is primary key
-# ..... parquet
-
 def currency_to_parquet(updated_rows: list):
-    ''''''
+    """
+    takes a list of updated currencies
+    calls a currency API
+    adds a currency name to each dictionary
+    converts the data to parquet
+
+    Args:
+        updated_rows (list): list of updated currencies
+    """
     # make api call and save to response
     url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json'
     response = requests.get(url)
