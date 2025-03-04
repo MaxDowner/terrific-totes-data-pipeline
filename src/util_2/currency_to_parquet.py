@@ -19,12 +19,12 @@ def currency_to_parquet(updated_rows: list):
     url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json'
     response = requests.get(url)
     print(response)
-
-    # add currency name to dict for all currencies
     object_response = response.json()
-    currency_code = updated_rows[0]['currency_code'].lower()
-    currency_name = object_response[currency_code]
-    updated_rows[0]['currency_name'] = currency_name
+    # add currency name to dict for all currencies
+    for dict in updated_rows:
+        currency_code = dict['currency_code'].lower()
+        currency_name = object_response[currency_code]
+        dict['currency_name'] = currency_name
     print(updated_rows)
 
     # convert to json lines
