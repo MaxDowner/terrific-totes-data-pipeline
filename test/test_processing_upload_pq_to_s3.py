@@ -25,7 +25,7 @@ def test_adds_uploads_a_file():
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
-        bucket_name = "processed-data-12345"
+        bucket_name = "processed-data12345"
         object_key = "2025/03/03/14/37-14-"
 
         # Create a mock Bucket
@@ -55,7 +55,7 @@ def test_adds_uploads_a_file_with_valid_key_name():
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
-        bucket_name = "processed-data-12345"
+        bucket_name = "processed-data12345"
         object_key = "2025/03/03/14/37-14-"
 
         # Create a mock Bucket
