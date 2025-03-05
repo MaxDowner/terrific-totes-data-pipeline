@@ -16,8 +16,10 @@ sales_dict = {
             "agreed_delivery_date": "2022-11-07",
             "agreed_payment_date": "2022-11-08",
             "agreed_delivery_location_id": 8,
-            "created_at": "2022-11-03 14:20:52.186",
-            "last_updated": "2022-11-04 11:37:10.341"
+            "created_date": "2022-11-03",
+            "created_time": "14:20:52.186",
+            "last_updated_date": "2022-11-04",
+            "last_updated_time": "11:37:10.341"
 
         },
         {
@@ -31,8 +33,10 @@ sales_dict = {
             "agreed_delivery_date": "2022-11-06",
             "agreed_payment_date": "2022-11-07",
             "agreed_delivery_location_id": 19,
-            "created_at": "2022-11-03 14:20:52.186",
-            "last_updated": "2022-11-04 11:37:10.341"
+            "created_date": "2022-11-03",
+            "created_time": "14:20:52.186",
+            "last_updated_date": "2022-11-04",
+            "last_updated_time": "11:37:10.341"
         },
         {
             "sales_order_id": 30,
@@ -45,8 +49,10 @@ sales_dict = {
             "agreed_delivery_date": "2022-11-26",
             "agreed_payment_date": "2022-11-28",
             "agreed_delivery_location_id": 4,
-            "created_at": "2022-11-03 14:20:52.186",
-            "last_updated": "2022-11-04 11:37:10.341"
+            "created_date": "2022-11-03",
+            "created_time": "14:20:52.186",
+            "last_updated_date": "2022-11-04",
+            "last_updated_time": "11:37:10.341"
         },
     ]
 }
@@ -65,12 +71,10 @@ def test_pq_file_is_readable():
     if os.path.exists("/tmp/formatted_fact_sales.parquet"):
         os.remove("/tmp/formatted_fact_sales.parquet")
     sales_to_parquet(sales_list)
-    # with open("/tmp/formatted_fact_sales.parquet", 'r') as f:
-    #     pass
     table = pq.read_table("/tmp/formatted_fact_sales.parquet")
-    # parquet_file = pq.ParquetFile("/tmp/formatted_fact_sales.parquet")
     metadata = pq.read_metadata("/tmp/formatted_fact_sales.parquet")
     assert str(table["units_sold"][2]) == "9000"
     assert str(table["currency_id"][1]) == "3"
-    assert metadata.num_columns == 12
+    assert str(table['agreed_delivery_date'][1]) == "2022-11-06"
+    assert metadata.num_columns == 14
     assert metadata.num_rows == 3
