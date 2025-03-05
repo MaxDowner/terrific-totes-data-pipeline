@@ -25,11 +25,11 @@ resource "aws_lambda_function" "processing_lambda_handler_resource" {
   ]
 }
 
-resource "aws_lambda_permission" "s3_eventbridge_permission" {
-  statement_id  = "AllowS3Event"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.processing_lambda_handler_resource.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.s3_event_rule.arn
-}
+# resource "aws_lambda_permission" "s3_eventbridge_permission" {
+#   statement_id  = "AllowS3Event"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.processing_lambda_handler_resource.function_name
+#   principal     = "events.amazonaws.com"
+#   source_arn    = aws_cloudwatch_event_rule.s3_event_rule.arn
+# }
 
