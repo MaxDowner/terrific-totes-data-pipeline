@@ -8,8 +8,10 @@ import pyarrow.parquet as pq
     Args:
         updated_rows (list): list of updated design data
 """
+
+
 def design_to_parquet(updated_rows: list):
-    
+
     with open("/tmp/output_design_dict.json", 'w') as f:
         for dict in updated_rows:
             line = json.dumps(dict)
