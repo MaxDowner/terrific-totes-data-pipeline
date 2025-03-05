@@ -1,6 +1,6 @@
 [
     {
-        "currency": [
+        "not_currency": [
             {
                 "currency_id": 1,
                 "currency_code": "GBP"
