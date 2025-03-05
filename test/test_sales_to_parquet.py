@@ -64,6 +64,6 @@ def test_pq_file_is_readable():
     # parquet_file = pq.ParquetFile("/tmp/formatted_fact_sales.parquet")
     metadata = pq.read_metadata("/tmp/formatted_fact_sales.parquet")
     assert str(table["units_sold"][2]) == "9000"
-    assert str(table["currency"][1]) == "3"
+    assert str(table["currency_id"][1]) == "3"
     assert metadata.num_columns == 9
     assert metadata.num_rows == 3
