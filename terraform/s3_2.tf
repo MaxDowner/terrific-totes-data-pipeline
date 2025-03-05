@@ -40,9 +40,13 @@ resource "aws_s3_object" "utility_layer_2" {
   key    = "layer/util.zip"
   # etag = filemd5(data.archive_file.util.output_path)
   ## source and depends_on below need to be changed to reflect lambda 2 locations
-  source = data.archive_file.util.output_path
+  source = data.archive_file.util_2.output_path
   depends_on = [data.archive_file.util]
 }
 
-
+resource "aws_s3_object" "refresh_log" {
+  bucket = "s3://totes-s3-logs/logs/"
+  key    = "logs/last_run.csv"
+  source = "${path.module}/../logs/last_run_test.csv"
+}
 
