@@ -1,8 +1,16 @@
 import logging
 import json
-from .util_2.staff_to_parquet import process_staff
-from .util_2.upload_pq_to_s3 import upload_pq_to_s3
-from .util.get_s3_bucket_name import get_s3_bucket_name
+
+import boto3
+
+from src.util_2.staff_to_parquet import process_staff
+from src.util_2.upload_pq_to_s3 import upload_pq_to_s3
+from src.util.get_s3_bucket_name import get_s3_bucket_name
+from src.util_2.currency_to_parquet import currency_to_parquet
+from src.util_2.design_to_parquet import design_to_parquet
+from src.util_2.address_to_parquet import address_to_parquet
+from src.util_2.counterparty_to_parquet import counterparty_to_parquet
+from src.util_2.sales_to_parquet import sales_to_parquet
 
 
 logger = logging.getLogger("Processing Lambda logger")
