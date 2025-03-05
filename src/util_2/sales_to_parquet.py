@@ -15,6 +15,10 @@ import pyarrow.parquet as pq
 #     "agreed_payment_date": "2022-12-22",  # >>>> links to dim_date
 #     "agreed_delivery_location_id": 8,  # >>>> links to dim_location
 # }
+# {
+#     "created_at": "", # >>>> from totesys
+#     "last_updated": "" # >>>> from totesys
+# }
 
 
 def sales_to_parquet(updated_rows: list):
