@@ -20,7 +20,7 @@ query_list = [
     file_name
      FROM design
      WHERE last_updated BETWEEN :time_last AND :time_now;""",
-    """SELECT address_id
+    """SELECT address_id,
         address_line_1,
         address_line_2,
         district,
