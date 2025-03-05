@@ -1,4 +1,3 @@
-import pandas as pd
 from src.util_2.design_to_parquet import design_to_parquet
 import os
 
@@ -43,4 +42,3 @@ def test_pq_file_is_readable():
     assert str(table['file_location'][1]) == 'data_7'
     assert metadata.num_columns == 4
     assert metadata.num_rows == 3
-
