@@ -54,7 +54,9 @@ query_list = [
         design_id,
         agreed_delivery_date,
         agreed_payment_date,
-        agreed_delivery_location_id
+        agreed_delivery_location_id,
+        created_at,
+        last_updated
          FROM sales_order
         FULL OUTER JOIN
         staff USING (staff_id)
