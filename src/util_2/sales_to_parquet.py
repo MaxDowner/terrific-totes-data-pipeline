@@ -36,5 +36,3 @@ def sales_to_parquet(updated_rows: list):
             f.write(line + "\n")
     table = pj.read_json("/tmp/output_sales_dict.json")
     pq.write_table(table, "/tmp/formatted_fact_sales.parquet")
-
-    
