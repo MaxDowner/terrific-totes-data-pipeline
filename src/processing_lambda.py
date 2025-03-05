@@ -1,4 +1,3 @@
-import boto3
 import logging
 import json
 from .util_2.staff_to_parquet import process_staff
@@ -11,8 +10,7 @@ logger.setLevel(logging.INFO)
 
 
 def processing_lambda_handler(event, context):
-    """ Lambda that processes the data and upload to s3 bucket
-    """
+    """Lambda that processes the data and upload to s3 bucket"""
     # Retrieving Bucket name & Key Name
     ingestion_bucket = event["Records"][0]["s3"]["bucket"]["name"]
     json_download_key = event["Records"][0]["s3"]["object"]["key"]
@@ -38,21 +36,35 @@ def processing_lambda_handler(event, context):
     for item in unpacked_json:
         for key, value in item.items():
             db_dict[key] = value
-
-    # util - currency
     # util section - data processing
+    # util - currency
+    if db_dict.get("currency"):
+        currency_to_parquet(db_dict["currency"])
+        logger.info("Ran process currency util function")
+    # util staff
     if db_dict.get("staff"):
         process_staff(db_dict["staff"])
         logger.info("Ran process staff util function")
     # util - design
+    if db_dict.get("design"):
+        design_to_parquet(db_dict["design"])
+        logger.info("Ran process design util function")
     # util - address
+    if db_dict.get("address"):
+        address_to_parquet(db_dict["address"])
+        logger.info("Ran process address util function")
     # util - counterparty
+    if db_dict.get("counterparty"):
+        counterparty_to_parquet(db_dict["counterparty"])
+        logger.info("Ran process counterparty util function")
     # util - sales order
+    if db_dict.get("sales_order"):
+        sales_to_parquet(db_dict["sales_order"])
+        logger.info("Ran process sales_order util function")
 
     # upload the pq to s3 bucket
     key_prefix = json_download_key[:-5]
     processed_bucket = get_s3_bucket_name("processed-data")
-    print(key_prefix)
     upload_pq_to_s3(s3_client, key_prefix, processed_bucket)
     logger.info(
         f'Parquet file(s) uploaded to "s3://{processed_bucket}/{key_prefix}"'
