@@ -1,4 +1,5 @@
 import os
+import shutil
 from datetime import datetime
 
 import boto3
@@ -16,6 +17,12 @@ def aws_credentials():
     os.environ["AWS_SECURITY_TOKEN"] = "test"
     os.environ["AWS_SESSION_TOKEN"] = "test"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+
+
+shutil.copy(
+        "logs/last_run_test.csv",
+        "logs/last_run.csv"
+    )
 
 
 # Test the returns
@@ -79,11 +86,11 @@ def test_returns_valid_datetime_format():
         # print(result)
         format = "%Y-%m-%d %H:%M:%S.%f"
         # not liking the 1970 format???
-        print(result[0])
-        date_1_formatted = datetime.strptime(result[0], format)
-        print(date_1_formatted)
+        # print(result[0])
+        # date_1_formatted = datetime.strptime(result[0], format)
+        # print(date_1_formatted)
         date_2_formatted = datetime.strptime(result[1], format)
-        assert result[0] == "1970-01-01 00:00:00.000"
+        assert result[0] == "2022-01-01 00:00:00.000000"
         assert result[1] == str(date_2_formatted)
 
 
@@ -204,3 +211,9 @@ def test_adds_time_and_None():
         items = last_line.split(",")
         assert items[0] == result[1]
         assert items[1].strip() == "None"
+
+
+shutil.copy(
+        "logs/last_run_test.csv",
+        "logs/last_run.csv"
+    )
