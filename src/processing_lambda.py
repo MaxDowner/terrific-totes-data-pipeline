@@ -1,9 +1,9 @@
 import boto3
 import logging
 import json
-from src.util_2.staff_to_parquet import process_staff
-from src.util_2.upload_pq_to_s3 import upload_pq_to_s3
-from src.util.get_s3_bucket_name import get_s3_bucket_name
+from .util_2.staff_to_parquet import process_staff
+from .util_2.upload_pq_to_s3 import upload_pq_to_s3
+from .util.get_s3_bucket_name import get_s3_bucket_name
 
 
 logger = logging.getLogger("Processing Lambda logger")
