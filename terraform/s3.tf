@@ -5,14 +5,12 @@ resource "aws_s3_bucket" "ingestion_data_bucket" {
   }
 }
 
-## supposedly allows eventbridge notifications
+## allows eventbridge notifications
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket      = aws_s3_bucket.ingestion_data_bucket.id
   eventbridge = true
-  ## depends_on aws_lambda_permission resource ???????
 }
 
-# THE TWO RESOURCES BELOW, I believe versioning is required for object lock
 resource "aws_s3_bucket_versioning" "ingestion_versioning" {
   bucket = aws_s3_bucket.ingestion_data_bucket.bucket
   versioning_configuration {
@@ -26,13 +24,12 @@ resource "aws_s3_bucket_object_lock_configuration" "ingestion_object_lock" {
 
   rule {
     default_retention {
-      # check that governance is the correct mode
       mode = "GOVERNANCE"
       days = 1
     }
   }
 }
-# THE TWO RESOURCES ABOVE
+
 resource "aws_s3_bucket" "ingestion_code_bucket" {
   bucket_prefix = var.code_ingestion_bucket_prefix
   tags = {

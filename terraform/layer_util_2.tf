@@ -2,7 +2,6 @@
 
 resource "null_resource" "create_utils_2" {
   provisioner "local-exec" {
-    ## line below this will need to target the utils for lambda 2
     command = "cp -r ${path.module}/../src/util_2 -t ${path.module}/../packages_2/python/src \n rm -rf ${path.module}/../packages_2/python/src/util/__pycache__"
   }
   triggers = { always_run = timestamp() }

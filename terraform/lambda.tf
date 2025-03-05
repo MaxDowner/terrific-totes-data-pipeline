@@ -17,17 +17,12 @@ resource "aws_lambda_function" "ingestion_lambda_handler_resource" {
   handler          = "ingestion_lambda.ingestion_lambda_handler"
   timeout          = 200
   source_code_hash = data.archive_file.lambda.output_base64sha256
-  #TODO: Connect the layer which is outlined above
   layers = [aws_lambda_layer_version.dependencies.arn, aws_lambda_layer_version.util_layer.arn]
   depends_on = [
     aws_iam_role_policy_attachment.lambda_cw_policy_attachment,
     aws_cloudwatch_log_group.ingest_group,
   ]
-  #   logging_config {
-  #     log_group = [aws_cloudwatch_log_group.ingest_group]
-  #     }
 }
-#------------------------------------------
 
 resource "aws_lambda_permission" "allow_scheduler" {
   statement_id   = "AllowExecutionFromCloudWatch"
