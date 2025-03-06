@@ -39,4 +39,7 @@ variable "lambda_3_name" {
 }
 
 
-
+variable "loading_code_bucket_prefix" {
+  type    = string
+  default = "loading-code"
+}
