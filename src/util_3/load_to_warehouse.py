@@ -7,6 +7,7 @@ import pyarrow.parquet as pq
 import boto3
 import adbc_driver_postgresql.dbapi as adbc
 from src.util.get_secret import get_secret
+import numpy as np
 
 table_list = ["currency",
               "staff",
@@ -72,7 +73,7 @@ def load_to_dw(secret, file, table_name):
 
     conn = adbc.connect(uri)
 
-    print(conn.adbc_get_table_schema(table_name)) 
+    # print(conn.adbc_get_table_schema(table_name)) 
     
     with conn.cursor() as cur:
         # reader = pq.ParquetFile(file)
@@ -83,15 +84,25 @@ def load_to_dw(secret, file, table_name):
 
         # )
         table = pq.read_table(file)
-        print(table)
-        cur.adbc_ingest('fact_sales_order', table,mode='append')
+        # print(table)
+        panda_table = table.to_pandas()
+        # print(panda_table)
+        d = dict.fromkeys(panda_table.select_dtypes(np.int64).columns,np.int32)
+        panda_table = panda_table.astype(d)
+        # print(panda_table)
 
+        arrow_table = pyarrow.Table.from_pandas(panda_table)
+        print(arrow_table)
+        result = cur.adbc_ingest('dim_staff', arrow_table, mode='append')
+        print(result)
+        
+    conn.commit()
 
 if __name__ == '__main__':
     client = boto3.client("secretsmanager")
     db_details = get_secret(client, 'totes-data-warehouse')
     table = 'dim_staff'
-    file = 'test_files/58-58formatted_fact_sales.parquet'
+    file = 'test_files/44-50formatted_dim_staff.parquet'
     load_to_dw(db_details, file, table)       
      
 
