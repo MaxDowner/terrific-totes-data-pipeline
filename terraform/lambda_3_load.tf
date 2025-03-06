@@ -20,7 +20,7 @@ resource "aws_lambda_function" "loading_lambda_handler_resource" {
   source_code_hash = data.archive_file.lambda_3_load.output_base64sha256
   layers = [aws_lambda_layer_version.dependencies.arn, aws_lambda_layer_version.util_layer.arn, aws_lambda_layer_version.util_layer_2.arn, "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python312:16"]
   depends_on = [
-    aws_iam_role_policy_attachment.lambda_3_load_policy_attachment,
+    aws_iam_role_policy_attachment.lambda_3_load_cw_policy_attachment,
     aws_cloudwatch_log_group.loading_group,
   ]
 }
