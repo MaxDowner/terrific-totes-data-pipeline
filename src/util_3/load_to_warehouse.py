@@ -84,6 +84,7 @@ def load_to_dw(secret, file, table_name):
         # )
         table = pq.read_table(file)
         print(table)
+        cur.adbc_ingest('fact_sales_order', table,mode='append')
 
 
 if __name__ == '__main__':
