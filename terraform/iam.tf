@@ -23,19 +23,6 @@ resource "aws_iam_role" "lambda_role" {
 # Lambda IAM Policy for S3 Write & Read
 # ------------------------------
 
-# Define
-# data "aws_iam_policy_document" "s3_data_policy_doc" {
-#   statement {
-#     actions = ["s3:PutObject",
-#       "s3:GetObject",
-#       "s3:ListBucket",
-#       "s3-object-lambda:*"
-#     ]
-#     resources = ["${aws_s3_bucket.ingestion_data_bucket.arn}","arn:aws:s3:::totes-s3-logs", "${aws_lambda_function.ingestion_lambda_handler_resource.arn}"]
-#   }
-# }
-
-
 data "aws_iam_policy_document" "s3_data_policy_doc" {
   statement {
     actions = ["s3:*",
