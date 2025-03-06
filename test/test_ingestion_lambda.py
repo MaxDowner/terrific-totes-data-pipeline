@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import pytest
 import boto3
@@ -24,6 +25,12 @@ def aws_credentials():  # credentials required for testing
     os.environ["AWS_SECURITY_TOKEN"] = "testing"
     os.environ["AWS_SESSION_TOKEN"] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+
+
+shutil.copy(
+        "logs/last_run_test.csv",
+        "logs/last_run.csv"
+    )
 
 
 @patch("src.ingestion_lambda.ingress_handler")
@@ -165,3 +172,9 @@ def test_data_uploaded_to_bucket(mocked_ingress):
         listed_objects = test_client.list_objects_v2(Bucket=bucket_name)
         # Assert
         assert listed_objects["KeyCount"] == 1
+
+
+shutil.copy(
+        "logs/last_run_test.csv",
+        "logs/last_run.csv"
+    )
