@@ -45,7 +45,7 @@ resource "aws_s3_object" "utility_layer_2" {
 }
 
 resource "aws_s3_object" "refresh_log" {
-  bucket = "s3://totes-s3-logs/logs/"
+  bucket = "totes-s3-logs"
   key    = "logs/last_run.csv"
   source = "${path.module}/../logs/last_run_test.csv"
 }
