@@ -32,6 +32,6 @@ resource "aws_s3_object" "utility_layer_3_load" {
   # etag = filemd5(data.archive_file.util.output_path)
   ## source and depends_on below need to be changed to reflect lambda 2 locations
   source = data.archive_file.util_3_load.output_path
-  depends_on = [data.archive_file.util_3_load]
+  depends_on = [data.archive_file.util_3_load, aws_s3_bucket.loading_code_bucket]
 }
 

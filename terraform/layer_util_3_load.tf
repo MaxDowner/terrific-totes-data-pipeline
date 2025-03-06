@@ -20,7 +20,7 @@ resource "aws_lambda_layer_version" "util_layer_3_load" {
   layer_name          = "util_layer_3_load"
   compatible_runtimes = [var.python_runtime]
   s3_key              = aws_s3_object.utility_layer_3_load.key
-  s3_bucket           = aws_s3_bucket.processing_code_bucket.bucket
-  depends_on          = [aws_s3_bucket.processing_code_bucket]
-  source_code_hash    = data.archive_file.util_2.output_base64sha256
+  s3_bucket           = aws_s3_bucket.loading_code_bucket.bucket
+  depends_on          = [aws_s3_bucket.loading_code_bucket, aws_s3_object.utility_layer_3_load]
+  source_code_hash    = data.archive_file.util_3_load.output_base64sha256
 }
