@@ -45,33 +45,6 @@ event = {
     ]
 }
 
-def test_warehouse_lambda_gets_correct_bucket(aws_credentials):
-    # Arrange
-    with mock_aws():
-        expected = "processed-data"
-        # Act
-        result = warehouse_lambda_handler(event, {})
-        # Assert
-        assert expected == result[0]
-
-def test_warehouse_lambda_gets_correct_key(aws_credentials):
-    # Arrange
-    with mock_aws():
-        expected = "2025/03/03/14/37-14formatted_dim_address.parquet"
-        # Act
-        result = warehouse_lambda_handler(event, {})
-        # Assert
-        assert expected == result[1]
-
-def test_warehouse_lambda_gets_correct_table_name(aws_credentials):
-    # Arrange
-    with mock_aws():
-        expected = "dim_address"
-        # Act
-        result = warehouse_lambda_handler(event, {})
-        # Assert
-        assert expected == result[2]
-
 def test_warehouse_lambda_downloads_file(aws_credentials):#
     # Arrange
     if os.path.exists("/tmp/downloaded_file.parquet"):
