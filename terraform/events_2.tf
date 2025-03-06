@@ -1,9 +1,34 @@
-# resource "aws_cloudwatch_event_rule" "s3_event_rule" {
-#   name                = "processing_lambda_s3_rule"
-#   description         = "executes lambda on s3 update"
-#   event_pattern       = jsonencode({"source": ["aws.s3"],
-#                         "detail-type": ["Object Created"]})
-# }
+resource "aws_cloudwatch_log_metric_filter" "error_2_proc_metric" {
+  name           = "ErrorCount"
+  pattern        = "ERROR"
+  log_group_name = "/aws/lambda/processing_lambda_handler"
+  depends_on     = [aws_cloudwatch_log_group.processing_group]
 
+  metric_transformation {
+    name      = "ErrorCount"
+    namespace = "ErrorNamespace"
+    value     = "1"
+  }
+}
 
+resource "aws_cloudwatch_metric_alarm" "metric_2_proc_alarm" {
+  alarm_name          = "error_alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.error_2_proc_metric.name
+  period              = 60
+  threshold           = 1
+  namespace           = "ErrorNamespace"
+  alarm_description   = "This metric monitors Lambda execution logs for any mention of the word ERROR"
+  statistic           = "SampleCount"
+  alarm_actions       = [aws_sns_topic.errorsOverTheLimit_processed.arn]
+}
 
+resource "aws_sns_topic" "errorsOverTheLimit_processed" {
+  name = "ErrorsOverTheLimitProcessed"
+}
+resource "aws_sns_topic_subscription" "lambda_2_proc_error_email" {
+  topic_arn = aws_sns_topic.errorsOverTheLimit_processed.arn
+  protocol  = "email"
+  endpoint  = var.email
+}
