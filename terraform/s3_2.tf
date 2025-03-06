@@ -16,6 +16,27 @@ resource "aws_s3_bucket" "processing_code_bucket" {
   }
 }
 
+## allows eventbridge notifications
+resource "aws_s3_bucket_notification" "bucket_to_load_notification" {
+  bucket      = aws_s3_bucket.processed_data_bucket.id
+  eventbridge = true
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.loading_lambda_handler_resource.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_lambda_permission.allow_process_to_load_bucket]
+}
+
+
+resource "aws_lambda_permission" "allow_process_to_load_bucket" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.loading_lambda_handler_resource.function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.processed_data_bucket.arn
+}
+
 ## Lambda code - retrieves from s3 bucket 
 
 resource "aws_s3_object" "lambda_2_code" {
