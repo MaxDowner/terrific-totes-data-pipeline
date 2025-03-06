@@ -32,3 +32,11 @@ variable "email" {
   type    = string
   default = "terrific.totes.05.coad@gmail.com"
 }
+
+variable "lambda_3_name" {
+  type    = string
+  default = "loading_lambda_handler"
+}
+
+
+
