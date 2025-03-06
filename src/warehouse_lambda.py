@@ -1,2 +1,2 @@
-def loading_lambda_handler(event, context):
+def warehouse_lambda_handler(event, context):
     pass

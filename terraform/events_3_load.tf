@@ -1,18 +1,31 @@
+resource "aws_cloudwatch_event_rule" "load_event" {
+  name                = "load_event"
+  description         = "loading event"
+  event_pattern = jsonencode({"source": ["aws.s3"],
+                         "detail-type": ["Object Created"]})
+}
+
+resource "aws_cloudwatch_event_target" "lambda_load_target" {
+  rule = aws_cloudwatch_event_rule.load_event.name
+  arn  = aws_lambda_function.loading_lambda_handler_resource.arn
+}
+
+
 resource "aws_cloudwatch_log_metric_filter" "error_3_load_metric" {
-  name           = "ErrorCount"
+  name           = "ErrorCountLoad"
   pattern        = "ERROR"
   log_group_name = "/aws/lambda/loading_lambda_handler"
   depends_on     = [aws_cloudwatch_log_group.loading_group]
 
   metric_transformation {
-    name      = "ErrorCount"
+    name      = "ErrorCountLoad"
     namespace = "ErrorNamespace"
     value     = "1"
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "metric_3_load_alarm" {
-  alarm_name          = "error_alarm"
+  alarm_name          = "error_alarm_load"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   metric_name         = aws_cloudwatch_log_metric_filter.error_3_load_metric.name
