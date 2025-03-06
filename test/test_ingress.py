@@ -543,6 +543,10 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
         mock_query.return_value = [
             [
                 12833,
+                "2022-11-03",
+                "14:20:52.186",
+                "2022-11-04",
+                "11:37:10.341",
                 13,
                 13,
                 47241,
@@ -555,6 +559,10 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             ],
             [
                 12834,
+                "2022-11-03",
+                "14:20:52.186",
+                "2022-11-04",
+                "11:37:10.341",
                 20,
                 10,
                 50975,
@@ -567,6 +575,10 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             ],
             [
                 12835,
+                "2022-11-03",
+                "14:20:52.186",
+                "2022-11-04",
+                "11:37:10.341",
                 16,
                 5,
                 21962,
@@ -579,6 +591,10 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             ],
             [
                 12836,
+                "2022-11-03",
+                "14:20:52.186",
+                "2022-11-04",
+                "11:37:10.341",
                 20,
                 3,
                 80088,
@@ -591,6 +607,10 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             ],
             [
                 12837,
+                "2022-11-03",
+                "14:20:52.186",
+                "2022-11-04",
+                "11:37:10.341",
                 17,
                 2,
                 84063,
@@ -603,10 +623,14 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             ],
         ]
         expected_sales_order_id = int
+        expected_created_date = str
+        expected_created_time = str
+        expected_last_updated_date = str
+        expected_last_updated_time = str
         expected_staff_id = int
         expected_counterparty_id = int
         expected_units_sold = int
-        expected_unit_price = str
+        expected_unit_price = Decimal
         expected_currency_id = int
         expected_design_id = int
         expected_agreed_delivery_date = str
@@ -619,6 +643,12 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
             assert isinstance(
                 result["sales_order_id"], expected_sales_order_id
             )
+            assert isinstance(result["created_date"], expected_created_date)
+            assert isinstance(result["created_time"], expected_created_time)
+            assert isinstance(result["last_updated_date"],
+                              expected_last_updated_date)
+            assert isinstance(result["last_updated_time"],
+                              expected_last_updated_time)
             assert isinstance(result["staff_id"], expected_staff_id)
             assert isinstance(
                 result["counterparty_id"], expected_counterparty_id
@@ -637,4 +667,4 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
                 result["agreed_delivery_location_id"],
                 expected_agreed_delivery_location_id,
             )
-            assert len(result) == 10
+            assert len(result) == 14
