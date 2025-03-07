@@ -1,10 +1,7 @@
-import logging
-# import pg8000
 import pandas as pd
 import pyarrow
 import pyarrow.dataset
 import pyarrow.parquet as pq
-import boto3
 import adbc_driver_postgresql.dbapi as adbc
 from src.util.get_secret import get_secret
 import numpy as np
@@ -72,17 +69,9 @@ def load_to_dw(secret, file, table_name):
     print(uri) 
 
     conn = adbc.connect(uri)
-
-    # print(conn.adbc_get_table_schema(table_name)) 
     
     with conn.cursor() as cur:
-        # reader = pq.ParquetFile(file)
-        # print(reader)
-        # cur.adbc_ingest(table_name, reader.iter_batches(), mode="create")
 
-        # reader = pyarrow.dataset.dataset(
-
-        # )
         table = pq.read_table(file)
         # print(table)
         panda_table = table.to_pandas()
@@ -98,13 +87,9 @@ def load_to_dw(secret, file, table_name):
         
     conn.commit()
 
-if __name__ == '__main__':
-    client = boto3.client("secretsmanager")
-    db_details = get_secret(client, 'totes-data-warehouse')
-    table = 'dim_staff'
-    file = 'test_files/44-50formatted_dim_staff.parquet'
-    load_to_dw(db_details, file, table)       
-     
-
-
-
+# if __name__ == '__main__':
+#     client = boto3.client("secretsmanager")
+#     db_details = get_secret(client, 'totes-data-warehouse')
+#     table = 'dim_staff'
+#     file = 'test_files/44-50formatted_dim_staff.parquet'
+#     load_to_dw(db_details, file, table)       

@@ -1,6 +1,7 @@
 from src.util.pg_connection_aws import connect_to_db, close_connection
 from src.util.get_time_window_s3 import get_time_window
 
+
 query_list = [
     """SELECT currency_id, currency_code FROM currency
      WHERE last_updated BETWEEN :time_last AND :time_now;""",
