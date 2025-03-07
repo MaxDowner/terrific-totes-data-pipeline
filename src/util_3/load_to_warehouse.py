@@ -1,4 +1,5 @@
 import pandas as pd
+import boto3
 import pyarrow
 import pyarrow.dataset
 import pyarrow.parquet as pq
@@ -66,11 +67,13 @@ Need to get the secret
 def load_to_dw(secret, file, table_name):
     uri = f"postgresql://{secret['username']}:{secret['password']}@{secret['host']}"\
     f":{secret['port']}/{secret['dbname']}"
-    print(uri) 
+    # print(uri) 
 
     conn = adbc.connect(uri)
     
     with conn.cursor() as cur:
+
+        print(conn.adbc_get_table_schema('fact_sales_order'))
 
         table = pq.read_table(file)
         # print(table)
@@ -82,14 +85,14 @@ def load_to_dw(secret, file, table_name):
 
         arrow_table = pyarrow.Table.from_pandas(panda_table)
         print(arrow_table)
-        result = cur.adbc_ingest('dim_staff', arrow_table, mode='append')
+        result = cur.adbc_ingest(table_name, arrow_table, mode='append')
         print(result)
         
     conn.commit()
 
-# if __name__ == '__main__':
-#     client = boto3.client("secretsmanager")
-#     db_details = get_secret(client, 'totes-data-warehouse')
-#     table = 'dim_staff'
-#     file = 'test_files/44-50formatted_dim_staff.parquet'
-#     load_to_dw(db_details, file, table)       
+if __name__ == '__main__':
+    client = boto3.client("secretsmanager")
+    db_details = get_secret(client, 'totes-data-warehouse')
+    table_name = 'fact_sales_order'
+    file = '/tmp/formatted_fact_sales.parquet'
+    load_to_dw(db_details, file, table_name)       

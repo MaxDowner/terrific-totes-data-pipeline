@@ -50,9 +50,9 @@ def sales_to_parquet(updated_rows: list):
     processed_schema = pa.schema([
         pa.field('sales_order_id', pa.int64()),
         pa.field('created_date', pa.date32()),
-        pa.field('created_time', pa.string()),
+        pa.field('created_time', pa.time32('ms')),
         pa.field('last_updated_date', pa.date32()),
-        pa.field('last_updated_time', pa.string()),
+        pa.field('last_updated_time', pa.time32('ms')),
         pa.field('staff_id', pa.int64()),
         pa.field('counterparty_id', pa.int64()),
         pa.field('units_sold', pa.int64()),

@@ -1,6 +1,7 @@
 from pyarrow import json as pj
 import json
 import pyarrow.parquet as pq
+import pyarrow.compute as pc
 import pyarrow as pa
 
 
@@ -37,7 +38,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('created_time', pa.string()),
         pa.field('last_updated_date', pa.string()),
         pa.field('last_updated_time', pa.string()),
-        pa.field('staff_id', pa.int64()),
+        pa.field('sales_staff_id', pa.int64()),
         pa.field('counterparty_id', pa.int64()),
         pa.field('units_sold', pa.int64()),
         pa.field('unit_price', pa.string()),
@@ -53,7 +54,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('created_time', pa.string()),
         pa.field('last_updated_date', pa.date32()),
         pa.field('last_updated_time', pa.string()),
-        pa.field('staff_id', pa.int64()),
+        pa.field('sales_staff_id', pa.int64()),
         pa.field('counterparty_id', pa.int64()),
         pa.field('units_sold', pa.int64()),
         pa.field('unit_price', pa.float64()),
@@ -72,4 +73,36 @@ def sales_to_parquet(updated_rows: list):
         parse_options=pj.ParseOptions(explicit_schema=raw_schema)
         )
     table = raw_table.cast(processed_schema)
+    print(table)
+    table.set_column(
+        table.schema.get_field_index("created_time"),
+        "created_time",
+        pc.strptime(table['created_time'], format="%H-%M-%S", unit='s').cast(pa.time32('s'))
+    )
+
+    print(table)
+
     pq.write_table(table, "/tmp/formatted_fact_sales.parquet")
+
+if __name__ == '__main__':
+    updated_rows = [{
+                    "sales_order_id": 12296,
+                    "created_date": "2025-01-23",
+                    "created_time": "12:51:10",
+                    "last_updated_date": "2025-01-23",
+                    "last_updated_time": "12:51:10",
+                    "sales_staff_id": 5,
+                    "counterparty_id": 13,
+                    "units_sold": 91436,
+                    "unit_price": "3.51",
+                    "currency_id": 3,
+                    "design_id": 280,
+                    "agreed_delivery_date": "2025-01-29",
+                    "agreed_payment_date": "2025-01-24",
+                    "agreed_delivery_location_id": 26
+                    }]
+    sales_to_parquet(updated_rows)
+
+
+
+    
