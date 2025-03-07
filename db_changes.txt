@@ -1,0 +1,36 @@
+How To Read:
+
+ToteSysStuff -> DesiredFormat
+column_name (data_type)
+
+Differences:
+
+dim_location:
+location_id (int)   int64 -> int32
+
+dim_design:
+design_id (int)   int64 -> int32
+
+dim_currency:
+currency_id (int)   int64 -> int32
+currency_code (varchar[3] -> varchar)
+
+dim_counterparty:
+counterparty_id (int)   int64 -> int32
+
+dim_staff:
+staff_id (int)   int64 -> int32
+location (varchar -> varchar NN)
+email_address (varchar -> email_address)
+
+fact_sales_order:
+sales_record_id (SERIAL)
+sales_order_id (int)   int64 -> int32
+staff_id (int64) -> sales_staff_id (int32)
+counterparty_id (int)   int64 -> int32
+units_sold (int)   int64 -> int32 
+unit_price (numeric -> numeric(10, 2))
+currency_id (int)   int64 -> int32
+agreed_delivery_date (varchar -> date)
+agreed_payment_date (varchar -> date)
+agreed_delivery_location_id (int)   int64 -> int32
