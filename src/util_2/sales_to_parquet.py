@@ -106,7 +106,7 @@ def sales_to_parquet(updated_rows: list):
     print(table.schema)
     print(table)
 
-    pq.write_table(table, "/tmp/formatted_fact_sales.parquet")
+    pq.write_table(table, "/tmp/formatted_fact_sales_order.parquet")
 
 
 if __name__ == '__main__':

@@ -30,6 +30,10 @@ def sales_to_parquet(updated_rows: list):
     Args:
         updated_rows (list): list of updated sales data
     """
+
+    for row in updated_rows:
+        row["sales_staff_id"] = row.pop("staff_id")
+
     # Schema and casting is to remove time from date
     raw_schema = pa.schema([
         pa.field('sales_order_id', pa.int64()),
@@ -37,7 +41,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('created_time', pa.string()),
         pa.field('last_updated_date', pa.string()),
         pa.field('last_updated_time', pa.string()),
-        pa.field('staff_id', pa.int64()),
+        pa.field('sales_staff_id', pa.int64()),
         pa.field('counterparty_id', pa.int64()),
         pa.field('units_sold', pa.int64()),
         pa.field('unit_price', pa.string()),
@@ -48,7 +52,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('agreed_delivery_location_id', pa.int64())
     ])
     processed_schema = pa.schema([
-        pa.field('sales_order_id', pa.int64()),
+        pa.field('sales_order_id', pa.int32()),
         pa.field('created_date', pa.date32()),
         pa.field('created_time', pa.time32('ms')),
         pa.field('last_updated_date', pa.date32()),
@@ -61,7 +65,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('design_id', pa.int64()),
         pa.field('agreed_payment_date', pa.date32()),
         pa.field('agreed_delivery_date', pa.date32()),
-        pa.field('agreed_delivery_location_id', pa.int64())
+        pa.field('agreed_delivery_location_id', pa.int32())
     ])
     with open("/tmp/output_sales_dict.json", "w") as f:
         for dict in updated_rows:
