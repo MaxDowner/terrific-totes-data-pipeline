@@ -1,5 +1,6 @@
 from src.warehouse_lambda import warehouse_lambda_handler
 import pytest
+from unittest.mock import patch
 import os
 import boto3
 from moto import mock_aws
@@ -45,7 +46,7 @@ event = {
     ]
 }
 
-def test_warehouse_lambda_downloads_file(aws_credentials):#
+def test_warehouse_lambda_downloads_file(aws_credentials):
     # Arrange
     if os.path.exists("/tmp/downloaded_file.parquet"):
         os.remove("/tmp/downloaded_file.parquet")
@@ -59,6 +60,35 @@ def test_warehouse_lambda_downloads_file(aws_credentials):#
         object_key = '2025/03/03/14/37-14formatted_dim_address.parquet'
         # Act
         test_client.upload_file(file, 'processed-data', object_key)
-        result = warehouse_lambda_handler(event, {})
+        warehouse_lambda_handler(event, {})
         # Assert
         assert os.path.exists("/tmp/downloaded_file.parquet")
+
+@patch('src.warehouse_lambda.load_to_dw')
+def test_warehouse_lambda_does_not_return_error_when_ran_successfully(mock_load, aws_credentials):
+    # Arrange
+    if os.path.exists("/tmp/downloaded_file.parquet"):
+        os.remove("/tmp/downloaded_file.parquet")
+    with mock_aws():
+        mock_load.return_value = None
+        test_client = boto3.client('s3')
+        test_client.create_bucket(
+            Bucket='processed-data',
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"}
+        )
+        dummy_secret_client = boto3.client('secretsmanager')
+        dummy_secret_client.create_secret(
+            Name="totes-data-warehouse",
+            SecretString='{"username": "user"}'
+        )
+        file = 'test_files/44-50formatted_dim_currency.parquet'
+        object_key = '2025/03/03/14/37-14formatted_dim_address.parquet'
+        # Act
+        test_client.upload_file(file, 'processed-data', object_key)
+        result = warehouse_lambda_handler(event, {})
+        # Assert
+        assert result[0] == 'processed-data'
+        assert result[1] == '2025/03/03/14/37-14formatted_dim_address.parquet'
+        assert result[2] == 'dim_address'
+        mock_load.assert_called_once()
+
