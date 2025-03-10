@@ -28,7 +28,6 @@ def ingestion_lambda_handler(event, context):
 
     #  create s3 client
     s3c = boto3.client("s3")
-    print('created client')
     # remote last runs log file / time windows
     bucket_name_logs = "totes-s3-logs"
     object_key = "logs/last_run.csv"
@@ -36,7 +35,6 @@ def ingestion_lambda_handler(event, context):
     updated_data = ingress_handler(
         db_details, s3c, bucket_name_logs, object_key
     )
-    print('got data')
     end_function = True
     for table in updated_data:
         for key in table:

@@ -1,7 +1,5 @@
 import os
 
-# from unittest.mock import patch
-
 import pytest
 from moto import mock_aws
 import boto3
@@ -26,7 +24,6 @@ def test_get_secret_valid(aws_credentials):
             Name="ProdSecrets",
             SecretString='{"username": "prod", "password": "hello"}',
         )
-
         expected_response = {"username": "prod", "password": "hello"}
         response = get_secret(client, "ProdSecrets")
         assert response == expected_response
@@ -41,10 +38,3 @@ def test_get_secret_invalid(aws_credentials):
         )
         with pytest.raises(ClientError):
             get_secret(client, "ProdSecrets")
-
-
-# def test_get_secret_live():
-#     # Create a Secrets Manager client
-#     client = boto3.client("secretsmanager")
-#     result = get_secret(client, "test")
-#     assert result == "test"

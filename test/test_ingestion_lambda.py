@@ -12,14 +12,8 @@ from src.util.get_secret import get_secret
 secret_name = "Tote-DB"
 region_name = "eu-west-2"
 
-# Create a Secrets Manager client
-session = boto3.session.Session()
-client = session.client(service_name="secretsmanager", region_name=region_name)
-db_details = get_secret(client, "Tote-DB")
-
-
 @pytest.fixture(scope="function", autouse=True)
-def aws_credentials():  # credentials required for testing
+def aws_credentials():
     os.environ["AWS_ACCESS_KEY_ID"] = "testing"
     os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
     os.environ["AWS_SECURITY_TOKEN"] = "testing"

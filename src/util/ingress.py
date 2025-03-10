@@ -142,13 +142,11 @@ def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
     try:
         db = connect_to_db(db_details)
         time_last, time_now = get_time_window(s3_client, bucket_name, log_key)
-        # print(time_last, time_now)
-        # for testing to get all data, remove on prod
-        # time_last = "1970-01-01 00:00:00.000"
         for i in range(len(query_list)):
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now
                 )
+            print("NO FAIL")
             if i == 5:
                 for row in updated_data:
                     row[4] = str(row[4])
@@ -159,6 +157,7 @@ def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
 
     except Exception:
         # log failure here
+        print("FAIL")
         pass
 
     finally:

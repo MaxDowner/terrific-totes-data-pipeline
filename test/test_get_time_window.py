@@ -26,9 +26,6 @@ def test_returns_valid_datetime_format():
     assert result[1] == str(date_2_formatted)
 
 
-# test the csv
-
-
 def test_writes_to_csv():
     with open("logs/last_run.csv", "r") as file:
         lines_before = len(file.readlines())
@@ -42,7 +39,6 @@ def test_writes_to_csv():
     get_time_window()
     with open("logs/last_run.csv", "r") as file:
         lines_after = len(file.readlines())
-        # updated_last_line = file.readlines()[-1]
     with open("logs/last_run.csv", "rb") as file:
         # Go to the end of the file before the last break-line
         file.seek(-2, os.SEEK_END)

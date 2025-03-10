@@ -46,10 +46,7 @@ def test_pq_file_is_readable():
     if os.path.exists("/tmp/formatted_dim_staff.parquet"):
         os.remove("/tmp/formatted_dim_staff.parquet")
     process_staff(staff_list)
-    # with open("/tmp/formatted_dim_staff.parquet", 'r') as f:
-    #     pass
     table = pq.read_table("/tmp/formatted_dim_staff.parquet")
-    # parquet_file = pq.ParquetFile("/tmp/formatted_dim_staff.parquet")
     metadata = pq.read_metadata("/tmp/formatted_dim_staff.parquet")
     assert str(table["first_name"][0]) == "Jeremie"
     assert str(table["department_name"][2]) == "Facilities"

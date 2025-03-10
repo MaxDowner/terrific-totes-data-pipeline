@@ -36,4 +36,4 @@ def currency_to_parquet(updated_rows: list):
     table = pj.read_json("/tmp/output_currency_dict.json")
     pq.write_table(table, "/tmp/formatted_dim_currency.parquet")
 
-    # return response
+    return response

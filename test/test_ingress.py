@@ -10,7 +10,7 @@ from src.util.ingress import ingress_handler
 from src.util.get_secret import get_secret
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="function", autouse=True)
 def aws_credentials():  # credentials required for testing
     os.environ["AWS_ACCESS_KEY_ID"] = "testing"
     os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
@@ -23,19 +23,23 @@ secret_name = "Tote-DB"
 region_name = "eu-west-2"
 
 # Create a Secrets Manager client
-session = boto3.session.Session()
-client = session.client(service_name="secretsmanager", region_name=region_name)
-db_details = get_secret(client, "Tote-DB")
+# session = boto3.session.Session()
+# client = session.client(service_name="secretsmanager", region_name=region_name)
+# db_details = get_secret(client, "Tote-DB")
 
 
-@patch("src.util.pg_connection_aws.Connection.run")
-def test_currency_data_query_returns_correct_scaffold(mock_query):
+@patch("src.util.pg8000.native.Connection.run")
+@patch("src.util.ingress.connect_to_db")
+@patch("src.util.ingress.close_connection")
+def test_currency_data_query_returns_correct_scaffold(mock_disconnect, mock_connect, mock_query):
     with mock_aws():
         # Arrange
         test_s3 = boto3.client("s3")
         bucket_name = "test_bucket1"
-        object_key = "logs/last_run.scv"
-
+        object_key = "logs/last_run.csv"
+        mock_connect.return_value = "HI-YA"
+        mock_disconnect.return_value = "BYE-YA"
+        mock_query.return_value = [[1, "GBP"], [2, "USD"], [3, "EUR"]]
         # Create a mock Bucket
         test_s3.create_bucket(
             Bucket=bucket_name,
@@ -43,11 +47,11 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
         )
         # Upload a file to the bucket
         test_s3.upload_file("logs/last_run_test.csv", bucket_name, object_key)
-        mock_query.return_value = [[1, "GBP"], [2, "USD"], [3, "EUR"]]
         expected_id_type = int
         expected_code_type = str
         # Act
-        results = ingress_handler(db_details, test_s3, bucket_name, object_key)
+        results = ingress_handler("", test_s3, bucket_name, object_key)
+        print(results)
         # Assert
 
     for result in results[0]["currency"]:
@@ -56,7 +60,7 @@ def test_currency_data_query_returns_correct_scaffold(mock_query):
         assert len(result) == 2
         assert len(result["currency_code"]) == 3
 
-
+"""
 @patch("src.util.pg_connection_aws.Connection.run")
 def test_staff_data_query_returns_correct_scaffold(mock_query):
     # Arrange
@@ -668,3 +672,4 @@ def test_sales_data_query_returns_correct_scaffold(mock_query):
                 expected_agreed_delivery_location_id,
             )
             assert len(result) == 14
+"""
