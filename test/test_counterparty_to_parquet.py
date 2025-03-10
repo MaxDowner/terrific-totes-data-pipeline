@@ -1,10 +1,12 @@
 import os
-
+import pytest
 from src.util_2.counterparty_to_parquet import counterparty_to_parquet
 import pyarrow.parquet as pq
 
-counterparty_dict = {
-    "counterparty": [
+
+@pytest.fixture(autouse=True)
+def counterparty():
+    counterparty_list = [
         {
             "counterparty_id": 1,
             "counterparty_legal_name": "Jeremie Ducket",
@@ -39,28 +41,26 @@ counterparty_dict = {
             "phone": "07292 601 468",
         },
     ]
-}
-
-counterparty_list = counterparty_dict["counterparty"]
+    return counterparty_list
 
 
-def test_process_counterparty_returns_a_pq_file():
+def test_process_counterparty_returns_a_pq_file(counterparty):
     if os.path.exists("/tmp/formatted_dim_counterparty.parquet"):
         os.remove("/tmp/formatted_dim_counterparty.parquet")
-    counterparty_to_parquet(counterparty_list)
+    counterparty_to_parquet(counterparty)
     assert os.path.exists("/tmp/formatted_dim_counterparty.parquet")
 
 
-def test_pq_file_is_readable():
+def test_pq_file_is_readable(counterparty):
     if os.path.exists("/tmp/formatted_dim_counterparty.parquet"):
         os.remove("/tmp/formatted_dim_counterparty.parquet")
-    counterparty_to_parquet(counterparty_list)
+    counterparty_to_parquet(counterparty)
     # with open("/tmp/formatted_dim_counterparty.parquet", 'r') as f:
     #     pass
     table = pq.read_table("/tmp/formatted_dim_counterparty.parquet")
     # parquet_file = pq.ParquetFile("/tmp/formatted_dim_counterparty.parquet")
     metadata = pq.read_metadata("/tmp/formatted_dim_counterparty.parquet")
     assert str(table["counterparty_legal_name"][0]) == "Jeremie Ducket"
-    assert str(table["district"][2]) == "Mid Manchester"
+    assert str(table["counterparty_legal_district"][2]) == "Mid Manchester"
     assert metadata.num_columns == 9
     assert metadata.num_rows == 3

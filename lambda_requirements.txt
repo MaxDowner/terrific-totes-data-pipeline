@@ -1,7 +1,7 @@
-boto3
-botocore
+adbc-driver-postgresql==1.4.0
+boto3==1.37.2
+botocore==1.37.2
 pg8000==1.31.2
-pyarrow==19.0.1
 python-dotenv==1.0.1
 jsonpatch==1.33
 jsonpath-ng==1.7.0

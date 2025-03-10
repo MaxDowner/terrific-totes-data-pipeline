@@ -1,9 +1,13 @@
 import os
 from src.util_2.address_to_parquet import address_to_parquet
+import pytest
 import pyarrow.parquet as pq
 
-address_dict = {
-    "address": [
+
+@pytest.fixture(autouse=True)
+def address():
+
+    address_list = [
         {
             "address_id": 1,
             "address_line_1": "9 Bogart Hill",
@@ -32,22 +36,20 @@ address_dict = {
             "country": "Falkland Islands (Malvinas)"
         }
     ]
-}
-
-address_list = address_dict["address"]
+    return address_list
 
 
-def test_process_address_returns_a_pq_file():
+def test_process_address_returns_a_pq_file(address):
     if os.path.exists("/tmp/formatted_dim_address.parquet"):
         os.remove("/tmp/formatted_dim_address.parquet")
-    address_to_parquet(address_list)
+    address_to_parquet(address)
     assert os.path.exists("/tmp/formatted_dim_address.parquet")
 
 
-def test_pq_file_is_readable():
+def test_pq_file_is_readable(address):
     if os.path.exists("/tmp/formatted_dim_address.parquet"):
         os.remove("/tmp/formatted_dim_address.parquet")
-    address_to_parquet(address_list)
+    address_to_parquet(address)
     # with open("/tmp/formatted_dim_address.parquet", 'r') as f:
     #     pass
     table = pq.read_table("/tmp/formatted_dim_address.parquet")

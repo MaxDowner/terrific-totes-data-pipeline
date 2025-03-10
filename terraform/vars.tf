@@ -32,3 +32,14 @@ variable "email" {
   type    = string
   default = "terrific.totes.05.coad@gmail.com"
 }
+
+variable "lambda_3_name" {
+  type    = string
+  default = "loading_lambda_handler"
+}
+
+
+variable "loading_code_bucket_prefix" {
+  type    = string
+  default = "loading-code"
+}

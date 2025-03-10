@@ -38,3 +38,7 @@ def warehouse_lambda_handler(event, context):
 
     # log success
     return [processing_bucket, parquet_download_key, table_name]
+
+def warehouse_lambda_handler(event, context):
+    pass
+
