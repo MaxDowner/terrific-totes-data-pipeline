@@ -47,6 +47,6 @@ def ingestion_lambda_handler(event, context):
         return
     timestamp = updated_data[-1]["time_of_update"]
     key = filename_from_timestamp(timestamp) + ".json"
-    data_body = json.dumps(updated_data)
+    data_body = json.dumps(updated_data, default=str)
     bucket_name_data = get_s3_bucket_name("ingested-data")
     upload_ingestion_to_s3(s3c, bucket_name_data, key, data_body)
