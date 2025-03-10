@@ -31,6 +31,10 @@ def sales_to_parquet(updated_rows: list):
     Args:
         updated_rows (list): list of updated sales data
     """
+
+    for row in updated_rows:
+        row["sales_staff_id"] = row.pop("staff_id")
+
     for item in updated_rows:
         item['created_time'] = item['created_time'][:7]
         item['last_updated_time'] = item['last_updated_time'][:7]

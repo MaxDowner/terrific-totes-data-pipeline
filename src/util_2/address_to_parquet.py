@@ -20,6 +20,9 @@ def address_to_parquet(updated_rows: list):
         updated_rows (list): list of updated address data
     """
 
+    for row in updated_rows:
+        row["location_id"] = row.pop("address_id")
+
     with open("/tmp/output_address_dict.json", "w") as f:
         for dict in updated_rows:
             line = json.dumps(dict)
