@@ -40,21 +40,21 @@ def address():
 
 
 def test_process_address_returns_a_pq_file(address):
-    if os.path.exists("/tmp/formatted_dim_address.parquet"):
-        os.remove("/tmp/formatted_dim_address.parquet")
+    if os.path.exists("/tmp/formatted_dim_location.parquet"):
+        os.remove("/tmp/formatted_dim_location.parquet")
     address_to_parquet(address)
-    assert os.path.exists("/tmp/formatted_dim_address.parquet")
+    assert os.path.exists("/tmp/formatted_dim_location.parquet")
 
 
 def test_pq_file_is_readable(address):
-    if os.path.exists("/tmp/formatted_dim_address.parquet"):
-        os.remove("/tmp/formatted_dim_address.parquet")
+    if os.path.exists("/tmp/formatted_dim_location.parquet"):
+        os.remove("/tmp/formatted_dim_location.parquet")
     address_to_parquet(address)
-    # with open("/tmp/formatted_dim_address.parquet", 'r') as f:
+    # with open("/tmp/formatted_dim_location.parquet", 'r') as f:
     #     pass
-    table = pq.read_table("/tmp/formatted_dim_address.parquet")
-    # parquet_file = pq.ParquetFile("/tmp/formatted_dim_address.parquet")
-    metadata = pq.read_metadata("/tmp/formatted_dim_address.parquet")
+    table = pq.read_table("/tmp/formatted_dim_location.parquet")
+    # parquet_file = pq.ParquetFile("/tmp/formatted_dim_location.parquet")
+    metadata = pq.read_metadata("/tmp/formatted_dim_location.parquet")
     assert str(table["address_line_1"][0]) == "9 Bogart Hill"
     assert str(table["city"][2]) == "Morton"
     assert metadata.num_columns == 7
