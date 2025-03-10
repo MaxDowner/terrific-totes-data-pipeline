@@ -5,7 +5,7 @@ import pyarrow.parquet as pq
 
 sales_dict = {
     "sales": [
-        {
+            {
                 "sales_order_id": 2,
                 "created_date": 19,
                 "created_time": 8,

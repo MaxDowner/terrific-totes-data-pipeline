@@ -50,7 +50,7 @@ query_list = [
         sales_order.created_at::date as created_date,
         sales_order.created_at::time as created_time,
         sales_order.last_updated::date as last_updated_date,
-        sales_order.last_updated::time as last_updated_time,        
+        sales_order.last_updated::time as last_updated_time,
         staff_id,
         counterparty_id,
         units_sold,
