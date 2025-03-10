@@ -38,7 +38,7 @@ def sales_to_parquet(updated_rows: list):
     for item in updated_rows:
         item['created_time'] = item['created_time'][:7]
         item['last_updated_time'] = item['last_updated_time'][:7]
-    
+
     # Schema and casting is to remove time from date
     raw_schema = pa.schema([
         pa.field('sales_order_id', pa.int64()),
@@ -65,7 +65,7 @@ def sales_to_parquet(updated_rows: list):
         pa.field('sales_staff_id', pa.int64()),
         pa.field('counterparty_id', pa.int64()),
         pa.field('units_sold', pa.int64()),
-        pa.field('unit_price', pa.decimal128(10,2)),
+        pa.field('unit_price', pa.decimal128(10, 2)),
         pa.field('currency_id', pa.int64()),
         pa.field('design_id', pa.int64()),
         pa.field('agreed_payment_date', pa.date32()),
@@ -84,7 +84,7 @@ def sales_to_parquet(updated_rows: list):
 
 # Convert Created_time
     col_idx = table.schema.get_field_index("created_time")
-    
+
     converted_time_column = pc.strptime(
         table["created_time"], format="%H:%M:%S", unit="s"
     ).cast(pa.time64("us"))
@@ -94,18 +94,20 @@ def sales_to_parquet(updated_rows: list):
 
 # Convert last_updated_time
     col_idx = table.schema.get_field_index("last_updated_time")
-    
+
     converted_time_column = pc.strptime(
         table["last_updated_time"], format="%H:%M:%S", unit="s"
     ).cast(pa.time64("us"))
 
     # Replace the column in the table
-    table = table.set_column(col_idx, "last_updated_time", converted_time_column)
+    table = table.set_column(col_idx, "last_updated_time",
+                             converted_time_column)
 
     print(table.schema)
     print(table)
 
     pq.write_table(table, "/tmp/formatted_fact_sales.parquet")
+
 
 if __name__ == '__main__':
     updated_rows = [{
@@ -114,7 +116,7 @@ if __name__ == '__main__':
                     "created_time": "12:51:10.199000",
                     "last_updated_date": "2025-01-23",
                     "last_updated_time": "12:51:10.199000",
-                    "sales_staff_id": 5,
+                    "staff_id": 5,
                     "counterparty_id": 13,
                     "units_sold": 91436,
                     "unit_price": "3.51",
@@ -125,7 +127,3 @@ if __name__ == '__main__':
                     "agreed_delivery_location_id": 26
                     }]
     sales_to_parquet(updated_rows)
-
-
-
-    

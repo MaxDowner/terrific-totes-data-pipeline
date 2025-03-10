@@ -1,7 +1,4 @@
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
-import numpy as np
 
 
 def create_dataset():
@@ -21,12 +18,7 @@ def create_dataset():
     df['date_id'] = df.date_id.dt.date
 
     print(df)
-    # makes a file
-    # table = pa.Table.from_pandas(df)
-    # d = dict.fromkeys(df.select_dtypes(np.datetime64).columns, np.datetime64('2022-01-01','D'))
-    # print(table)
-    # pq.write_table(table, "/tmp/formatted_dim_date.parquet")
     df.to_parquet("/tmp/formatted_dim_date.parquet")
 
-if __name__ == '__main__':
-    create_dataset()
+# if __name__ == '__main__':
+#     create_dataset()

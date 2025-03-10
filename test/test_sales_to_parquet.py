@@ -75,7 +75,7 @@ def test_pq_file_is_readable(sales):
     sales_to_parquet(sales)
     table = pq.read_table("/tmp/formatted_fact_sales.parquet")
     metadata = pq.read_metadata("/tmp/formatted_fact_sales.parquet")
-    assert str(table["units_sold"][1]) == "9000"
+    assert str(table["units_sold"][2]) == "9000"
     assert str(table["currency_id"][1]) == "3"
     assert str(table['agreed_delivery_date'][1]) == "2022-11-06"
     assert metadata.num_columns == 14
