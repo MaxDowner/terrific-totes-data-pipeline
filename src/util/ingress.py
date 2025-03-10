@@ -128,7 +128,8 @@ column_list = [
 
 
 def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
-    """Return list of dictionaries of updated data with headers as keys.
+    """
+    Return list of dictionaries of updated data, with headers as keys.
 
     connects to the db
     logs time in csv log
@@ -137,10 +138,10 @@ def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
     returns list of dictionaries of updated data
 
     Args:
-        db_details:
-        s3_client:
-        bucket_name:
-        log_key:
+        db_details: postgres db database credentials
+        s3_client: s3 client instance
+        bucket_name: name of the bucket to upload to
+        log_key: name to save the log to/ call it from
 
 
     Returns:

@@ -16,8 +16,12 @@ from copy import deepcopy
 
 def counterparty_to_parquet(updated_rows: list):
     """
+    Transform ingested counterparty data into the required format
+    and file type and save in tmp.
+
     takes a list of updated data for counterparty
     converts the data to parquet
+    Saves parquet data in the tmp folder
 
     Args:
         updated_rows (list): list of updated counterparty data

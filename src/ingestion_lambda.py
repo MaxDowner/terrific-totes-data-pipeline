@@ -9,8 +9,9 @@ from src.util.get_secret import get_secret
 
 
 def ingestion_lambda_handler(event, context):
-    """
-    Checks for updates in the live database and
+    """One Liner
+
+    Checks for updates in the live database,
     extracts new data and processes the data into
     a JSON output >> sends JSON to 'Ingested-Data' buckets
     """

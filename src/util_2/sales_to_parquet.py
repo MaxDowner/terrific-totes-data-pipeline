@@ -4,28 +4,15 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
-# {
-#     "sales_order_id": 121,
-#     "staff_id": 18,  # >>>> sales_staff_id links to dim_staff
-#     "counterparty_id": 5,  # >>>> links to dim_counterpart
-#     "units_sold": 90219,
-#     "unit_price": "3.96",
-#     "currency_id": 2,  # >>>> links to dim_currency
-#     "design_id": 26,  # >>>> links to dim_design
-#     "agreed_delivery_date": "2022-12-17",  # >>>> links to dim_date
-#     "agreed_payment_date": "2022-12-22",  # >>>> links to dim_date
-#     "agreed_delivery_location_id": 8,  # >>>> links to dim_location
-# }
-# {
-#     "created_at": "", # >>>> from totesys
-#     "last_updated": "" # >>>> from totesys
-# }
-
-
 def sales_to_parquet(updated_rows: list):
     """
+    Transform ingested sales data into the required format
+    and file type and save in tmp.
+
     takes a list of updated data for salesS
+    replace the staff_id header with sales_staff_id
     converts the data to parquet
+    saves to tmp folder
 
     Args:
         updated_rows (list): list of updated sales data

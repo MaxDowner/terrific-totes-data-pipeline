@@ -1,6 +1,6 @@
 import os
 
-from src.util_2.staff_to_parquet import process_staff
+from src.util_2.staff_to_parquet import staff_to_parquet
 import pyarrow.parquet as pq
 
 staff_dict = {
@@ -38,14 +38,14 @@ staff_list = staff_dict["staff"]
 def test_process_staff_returns_a_pq_file():
     if os.path.exists("/tmp/formatted_dim_staff.parquet"):
         os.remove("/tmp/formatted_dim_staff.parquet")
-    process_staff(staff_list)
+    staff_to_parquet(staff_list)
     assert os.path.exists("/tmp/formatted_dim_staff.parquet")
 
 
 def test_pq_file_is_readable():
     if os.path.exists("/tmp/formatted_dim_staff.parquet"):
         os.remove("/tmp/formatted_dim_staff.parquet")
-    process_staff(staff_list)
+    staff_to_parquet(staff_list)
     # with open("/tmp/formatted_dim_staff.parquet", 'r') as f:
     #     pass
     table = pq.read_table("/tmp/formatted_dim_staff.parquet")

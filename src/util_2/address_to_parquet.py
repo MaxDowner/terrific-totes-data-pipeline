@@ -13,11 +13,17 @@ import pyarrow.parquet as pq
 
 
 def address_to_parquet(updated_rows: list):
-    """takes a list of updated data for addresses
+    """
+    Transform ingested address data into the required format
+    and file type and save in tmp.
+
+    Takes a list of updated data for addresses
+    Replaces address_id with location iD
     converts the data to parquet
+    Saves parquet data in the tmp folder
 
     Args:
-        updated_rows (list): list of updated address data
+        updated_rows (list): list of updated address data in the format
     """
 
     for row in updated_rows:

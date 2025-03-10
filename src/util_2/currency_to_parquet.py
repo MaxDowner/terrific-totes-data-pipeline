@@ -6,8 +6,11 @@ import pyarrow.parquet as pq
 
 def currency_to_parquet(updated_rows: list):
     """
+    Transform ingested currency data into the required format
+    and file type and save in tmp.
+
     takes a list of updated currencies
-    calls a currency API
+    calls a currency API to match currency name to currency code
     adds a currency name to each dictionary
     converts the data to parquet
 
@@ -35,5 +38,3 @@ def currency_to_parquet(updated_rows: list):
     # convert to parquet
     table = pj.read_json("/tmp/output_currency_dict.json")
     pq.write_table(table, "/tmp/formatted_dim_currency.parquet")
-
-    # return response

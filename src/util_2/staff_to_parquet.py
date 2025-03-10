@@ -3,9 +3,14 @@ import json
 import pyarrow.parquet as pq
 
 
-def process_staff(updated_rows: list):
-    """takes a list of updated data for staff
+def staff_to_parquet(updated_rows: list):
+    """
+    Transform ingested staff data into the required format
+    and file type and save in tmp.
+
+    takes a list of updated data for staff
     converts the data to parquet
+    saves to tmp folder
 
     Args:
         updated_rows (list): list of updated staff data

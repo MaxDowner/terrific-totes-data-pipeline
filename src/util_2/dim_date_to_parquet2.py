@@ -17,7 +17,6 @@ def create_dataset():
     df["month_name"] = df.date_id.dt.strftime("%B")
     df["quarter"] = df.date_id.dt.quarter
 
-    print(df)
     # makes a file
     table = pa.Table.from_pandas(df)
     pq.write_table(table, "/tmp/formatted_dim_date.parquet")
