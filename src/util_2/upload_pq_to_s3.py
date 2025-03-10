@@ -2,10 +2,13 @@ import glob
 
 
 def upload_pq_to_s3(s3_client: object, s3_key_prefix: str, bucket_name: str):
-    """scans `/tmp/` folder for generated parquet files
+    """Upload parquet files in tmp folder to s3 transform bucket
+
+    scans `/tmp/` folder for generated parquet files
     uploads to requested bucket using the s3 key prefix
     s3_key_prefix is the same as the downloaded json minus json
     i.e '2025/03/03/14/37-14-'
+
     Args:
         s3_client (object): boto3 s3 client
         s3_key_prefix (str): key prix timestamp

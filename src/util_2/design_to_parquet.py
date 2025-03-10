@@ -2,16 +2,15 @@ from pyarrow import json as pj
 import json
 import pyarrow.parquet as pq
 
-"""takes a list of updated data for design
-    converts the data to parquet
+
+def design_to_parquet(updated_rows: list):
+    """
+    Take a list of updated data for design,
+    convert the data to parquet and save to tmp file.
 
     Args:
         updated_rows (list): list of updated design data
-"""
-
-
-def design_to_parquet(updated_rows: list):
-
+    """
     with open("/tmp/output_design_dict.json", 'w') as f:
         for dict in updated_rows:
             line = json.dumps(dict)

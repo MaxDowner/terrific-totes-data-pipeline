@@ -1,4 +1,8 @@
 def filename_from_timestamp(timestamp):
+    '''
+    Return a sensible aws object key
+    constructed from the time at which the ingestion lambda runs.
+    '''
 
     year = timestamp[:4]
     month = timestamp[5:7]

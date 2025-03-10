@@ -5,7 +5,7 @@ import pyarrow.parquet as pq
 
 def create_dataset():
     """
-    returns a dataframe
+    Generate a dim_date table in parquet and write to a file in the tmp folder.
     """
     # creates dataset
     df = pd.DataFrame({"date_id": pd.date_range("2022-01-01", "2030-12-31")})
