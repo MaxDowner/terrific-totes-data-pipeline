@@ -5,6 +5,7 @@ import os
 import boto3
 from moto import mock_aws
 
+
 @pytest.fixture(scope="function")
 def aws_credentials():  # credentials required for testing
     os.environ["AWS_ACCESS_KEY_ID"] = "testing"
@@ -12,6 +13,7 @@ def aws_credentials():  # credentials required for testing
     os.environ["AWS_SECURITY_TOKEN"] = "testing"
     os.environ["AWS_SESSION_TOKEN"] = "testing"
     os.environ["AWS_DEFAULT_REGION"] = "eu-west-2"
+
 
 event = {
     "Records": [
@@ -46,6 +48,7 @@ event = {
     ]
 }
 
+
 def test_warehouse_lambda_downloads_file(aws_credentials):
     # Arrange
     if os.path.exists("/tmp/downloaded_file.parquet"):
@@ -64,8 +67,9 @@ def test_warehouse_lambda_downloads_file(aws_credentials):
         # Assert
         assert os.path.exists("/tmp/downloaded_file.parquet")
 
+
 @patch('src.warehouse_lambda.load_to_dw')
-def test_warehouse_lambda_does_not_return_error_when_ran_successfully(mock_load, aws_credentials):
+def test_warehouse_lambda_runs_successfully(mock_load, aws_credentials):
     # Arrange
     if os.path.exists("/tmp/downloaded_file.parquet"):
         os.remove("/tmp/downloaded_file.parquet")
@@ -91,4 +95,3 @@ def test_warehouse_lambda_does_not_return_error_when_ran_successfully(mock_load,
         assert result[1] == '2025/03/03/14/37-14formatted_dim_address.parquet'
         assert result[2] == 'dim_address'
         mock_load.assert_called_once()
-

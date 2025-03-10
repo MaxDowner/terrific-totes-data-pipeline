@@ -7,6 +7,7 @@ from src.util_3.load_to_warehouse import load_to_dw
 logger = logging.getLogger("Processing Lambda logger")
 logger.setLevel(logging.INFO)
 
+
 def warehouse_lambda_handler(event, context):
 
     processing_bucket = event["Records"][0]["s3"]["bucket"]["name"]
@@ -15,7 +16,7 @@ def warehouse_lambda_handler(event, context):
     logger.info(f"Attempting to download {parquet_download_key}")
     s3_client = boto3.client("s3")
     filepath = '/tmp/downloaded_file.parquet'
-    
+
     try:
         s3_client.download_file(
             processing_bucket, parquet_download_key, filepath
@@ -41,4 +42,3 @@ def warehouse_lambda_handler(event, context):
         return
 
     return [processing_bucket, parquet_download_key, table_name]
-
