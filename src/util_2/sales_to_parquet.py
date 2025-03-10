@@ -31,6 +31,10 @@ def sales_to_parquet(updated_rows: list):
     Args:
         updated_rows (list): list of updated sales data
     """
+    for item in updated_rows:
+        item['created_time'] = item['created_time'][:7]
+        item['last_updated_time'] = item['last_updated_time'][:7]
+    
     # Schema and casting is to remove time from date
     raw_schema = pa.schema(
         [
@@ -86,6 +90,7 @@ def sales_to_parquet(updated_rows: list):
         ),
     )
 
+    print(table.schema)
     print(table)
 
     pq.write_table(table, "/tmp/formatted_fact_sales.parquet")
