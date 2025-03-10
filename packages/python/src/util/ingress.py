@@ -110,6 +110,10 @@ column_list = [
     ],
     [
         "sales_order_id",
+        'created_date',
+        'created_time',
+        'last_updated_date',
+        'last_updated_time',
         "staff_id",
         "counterparty_id",
         "units_sold",
