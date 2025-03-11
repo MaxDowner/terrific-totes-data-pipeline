@@ -35,7 +35,9 @@ jobs:
       - name: pip audit
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
-          virtual-environment: venv/ 
+          virtual-environment: venv/
+      - name: date populate
+        run: date-pop 
 
   deploy-lambda:
     name: deploy-lambda
