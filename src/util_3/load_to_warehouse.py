@@ -77,25 +77,31 @@ def load_to_dw(secret, file, table_name):
     conn = adbc.connect(uri)
 
     with conn.cursor() as cur:
-
-        print(conn.adbc_get_table_schema("fact_sales_order"))
-
+        # Code block converts file to pandas table and changes int type format
         table = pq.read_table(file)
-        # print(table)
         panda_table = table.to_pandas()
-        # print(panda_table)
         d = dict.fromkeys(
             panda_table.select_dtypes(np.int64).columns, np.int32
         )
         panda_table = panda_table.astype(d)
-        # print(panda_table)
-
+        # Converts back to pyarrow table
         arrow_table = pyarrow.Table.from_pandas(panda_table)
-        print(arrow_table)
-        result = cur.adbc_ingest(table_name, arrow_table, mode="append")
-        print(result)
 
-    conn.commit()
+        # fact_sales_order rows are not updated, only appended
+        if table_name != "fact_sales_order":
+            # Code block deletes rows with existing ids
+            cur.execute(f"SELECT * FROM {table_name};")
+            remote_table = cur.fetch_arrow_table()
+            id_column = table_name[4:] + "_id"
+            for id in arrow_table[id_column]:
+                if id in remote_table[id_column]:
+                    # drop row
+                    print("EXISTS")
+
+        # cur.adbc_ingest(table_name, arrow_table, mode="append")
+
+
+    # conn.commit()
 
 
 if __name__ == "__main__":
