@@ -1,6 +1,7 @@
 from unittest.mock import patch
 import os
 import glob
+import shutil
 
 from moto import mock_aws
 import boto3
@@ -433,6 +434,10 @@ def test_counterparty_util_doesnt_run_without_data(mocked_counterparty):
 @patch("src.processing_lambda.sales_to_parquet")
 def test_sales_util_runs_with_data(mocked_sales):
     clear_temp_pq_files()
+    shutil.copy(
+        "test_files/formatted_dim_staff.parquet",
+        "/tmp/formatted_fact_sales_order.parquet",
+    )
     with mock_aws():
         test_s3_in = boto3.client("s3")
         bucket_name = "ingested-data123456"
