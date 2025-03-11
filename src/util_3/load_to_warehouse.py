@@ -1,4 +1,5 @@
 import boto3
+import logging
 import pyarrow
 import pyarrow.dataset
 import pyarrow.parquet as pq
@@ -6,64 +7,9 @@ import adbc_driver_postgresql.dbapi as adbc
 from src.util.get_secret import get_secret
 import numpy as np
 
-table_list = [
-    "currency",
-    "staff",
-    "design",
-    "address",
-    "counterparty",
-    "sales_order",
-]
-column_list = [
-    ["currency_id", "currency_code"],
-    [
-        "staff_id",
-        "first_name",
-        "last_name",
-        "department_name",
-        "location",
-        "email_address",
-    ],
-    ["design_id", "design_name", "file_location", "file_name"],
-    [
-        "address_id",
-        "address_line_1",
-        "address_line_2",
-        "district",
-        "city",
-        "postal_code",
-        "country",
-        "phone",
-    ],
-    [
-        "counterparty_id",
-        "counterparty_legal_name",
-        "address_line_1",
-        "address_line_2",
-        "district",
-        "city",
-        "postal_code",
-        "country",
-        "phone",
-    ],
-    [
-        "sales_order_id",
-        "staff_id",
-        "counterparty_id",
-        "units_sold",
-        "unit_price",
-        "currency_id",
-        "design_id",
-        "agreed_delivery_date",
-        "agreed_payment_date",
-        "agreed_delivery_location_id",
-    ],
-]
 
-"""
-Need to get the secret
-"""
-#  uri = "postgresql://postgres:password@localhost:5432/postgres"
+logger = logging.getLogger("Load to warehouse logger")
+logger.setLevel(logging.INFO)
 
 
 def load_to_dw(secret, file, table_name):
@@ -72,11 +18,11 @@ def load_to_dw(secret, file, table_name):
         f"{secret['password']}@{secret['host']}"
         f":{secret['port']}/{secret['dbname']}"
     )
-    # print(uri)
 
     conn = adbc.connect(uri)
 
     with conn.cursor() as cur:
+        logger.info(f"Attempting to load file: {file}")
         # Code block converts file to pandas table and changes int type format
         table = pq.read_table(file)
         panda_table = table.to_pandas()
@@ -95,18 +41,19 @@ def load_to_dw(secret, file, table_name):
             id_column = table_name[4:] + "_id"
             for id in arrow_table[id_column]:
                 if id in remote_table[id_column]:
-                    # drop row
-                    print("EXISTS")
+                    formatted_id = int(str(id))
+                    cur.execute(f"DELETE FROM {table_name} WHERE {id_column} = {formatted_id};")
 
-        # cur.adbc_ingest(table_name, arrow_table, mode="append")
+        result = cur.adbc_ingest(table_name, arrow_table, mode="append")
 
+        logger.info(f"Adding/updating {result} entries to {table_name}")
 
-    # conn.commit()
+    conn.commit()
 
 
 if __name__ == "__main__":
     client = boto3.client("secretsmanager")
     db_details = get_secret(client, "totes-data-warehouse")
-    table_name = "fact_sales_order"
-    file = "/tmp/formatted_fact_sales.parquet"
+    table_name = "dim_staff"
+    file = "/tmp/formatted_dim_staff.parquet"
     load_to_dw(db_details, file, table_name)
