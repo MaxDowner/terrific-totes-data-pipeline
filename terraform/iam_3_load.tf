@@ -27,7 +27,12 @@ resource "aws_iam_role_policy_attachment" "lambda_3_load_cw_policy_attachment" {
   policy_arn = aws_iam_policy.cw_policy_3_load.arn
 }
 
-
+#  Attatch secret manager role
+resource "aws_iam_role_policy_attachment" "lambda_load_secrets_policy_attachment" {
+  #TODO: attach the secrets policy to the lambda role
+  role       = aws_iam_role.lambda_3_load_role.name
+  policy_arn = aws_iam_policy.secrets_manager_policy.arn
+}
 
 
 
