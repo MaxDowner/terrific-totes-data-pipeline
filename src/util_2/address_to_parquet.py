@@ -1,20 +1,15 @@
-# "address_id",
-# "address_line_1",
-# "address_line_2",
-# "district",
-# "city",
-# "postal_code",
-# "country",
-# "phone",
-
 from pyarrow import json as pj
 import json
 import pyarrow.parquet as pq
 
 
 def address_to_parquet(updated_rows: list):
-    """takes a list of updated data for addresses
+    """Transform ingested address data into the required format
+    and file type and save in tmp.
+    Takes a list of updated data for addresses
+    Replaces address_id with location iD
     converts the data to parquet
+    Saves parquet data in the tmp folder
 
     Args:
         updated_rows (list): list of updated address data

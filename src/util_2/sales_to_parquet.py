@@ -5,28 +5,13 @@ import pyarrow.compute as pc
 import pyarrow as pa
 
 
-# {
-#     "sales_order_id": 121,
-#     "staff_id": 18,  # >>>> sales_staff_id links to dim_staff
-#     "counterparty_id": 5,  # >>>> links to dim_counterpart
-#     "units_sold": 90219,
-#     "unit_price": "3.96",
-#     "currency_id": 2,  # >>>> links to dim_currency
-#     "design_id": 26,  # >>>> links to dim_design
-#     "agreed_delivery_date": "2022-12-17",  # >>>> links to dim_date
-#     "agreed_payment_date": "2022-12-22",  # >>>> links to dim_date
-#     "agreed_delivery_location_id": 8,  # >>>> links to dim_location
-# }
-# {
-#     "created_at": "", # >>>> from totesys
-#     "last_updated": "" # >>>> from totesys
-# }
-
-
 def sales_to_parquet(updated_rows: list):
-    """
+    """Transform ingested sales data into the required format
+    and file type and save in `/tmp/`.
     takes a list of updated data for salesS
+    replace the staff_id header with sales_staff_id
     converts the data to parquet
+    saves to `/tmp/` folder
 
     Args:
         updated_rows (list): list of updated sales data
@@ -107,23 +92,3 @@ def sales_to_parquet(updated_rows: list):
     print(table)
 
     pq.write_table(table, "/tmp/formatted_fact_sales_order.parquet")
-
-
-if __name__ == '__main__':
-    updated_rows = [{
-                    "sales_order_id": 12296,
-                    "created_date": "2025-01-23",
-                    "created_time": "12:51:10.199000",
-                    "last_updated_date": "2025-01-23",
-                    "last_updated_time": "12:51:10.199000",
-                    "staff_id": 5,
-                    "counterparty_id": 13,
-                    "units_sold": 91436,
-                    "unit_price": "3.51",
-                    "currency_id": 3,
-                    "design_id": 280,
-                    "agreed_delivery_date": "2025-01-29",
-                    "agreed_payment_date": "2025-01-24",
-                    "agreed_delivery_location_id": 26
-                    }]
-    sales_to_parquet(updated_rows)
