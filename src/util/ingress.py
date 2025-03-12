@@ -128,24 +128,27 @@ column_list = [
 ]
 
 
-def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
-    """util func that connects to the db
+def ingress_handler(db_details: dict, s3_client, bucket_name: str, log_key: str):
+    """Return list of dictionaries of updated data, with headers as keys.
+    connects to the db
     logs time in csv log
     checks for updated data
     adds headers as keys to dictionary
     returns list of dictionaries of updated data
+    Args:
+        db_details (dict): database details returned from get secret
+        s3_client (boto3): Boto3 s3 client
+        bucket_name (str): name of bucket where logs are stored
+        log_key (str): s3 key to log file
 
     Returns:
-        list: list of dictionaries to be processed
+        list: list of dicts containing the updated data to be processed
     """
     db = None
     data_dump = []
     try:
         db = connect_to_db(db_details)
         time_last, time_now = get_time_window(s3_client, bucket_name, log_key)
-        # print(time_last, time_now)
-        # for testing to get all data, remove on prod
-        # time_last = "1970-01-01 00:00:00.000"
         for i in range(len(query_list)):
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now
