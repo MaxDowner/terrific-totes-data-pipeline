@@ -39,10 +39,13 @@ def load_to_dw(secret, file, table_name):
             cur.execute(f"SELECT * FROM {table_name};")
             remote_table = cur.fetch_arrow_table()
             id_column = table_name[4:] + "_id"
+            print(id_column)
+            print(arrow_table)
             for id in arrow_table[id_column]:
                 if id in remote_table[id_column]:
                     formatted_id = int(str(id))
-                    cur.execute(f"DELETE FROM {table_name} WHERE {id_column} = {formatted_id};")
+                    cur.execute(f"""DELETE FROM {table_name}
+                    WHERE {id_column} = {formatted_id};""")
 
         result = cur.adbc_ingest(table_name, arrow_table, mode="append")
 
