@@ -95,7 +95,7 @@ def test_handler_downloads_the_json_file_from_the_bucket():
         clear_temp_pq_files()
 
 
-@patch("src.processing_lambda.process_staff")
+@patch("src.processing_lambda.staff_to_parquet")
 def test_staff_util_runs_with_data(mocks_staff):
     clear_temp_pq_files()
     with mock_aws():
@@ -127,7 +127,7 @@ def test_staff_util_runs_with_data(mocks_staff):
         clear_temp_pq_files()
 
 
-@patch("src.processing_lambda.process_staff")
+@patch("src.processing_lambda.staff_to_parquet")
 def test_staff_util_runs_without_data(mocks_staff):
     clear_temp_pq_files()
     with mock_aws():
