@@ -3,10 +3,11 @@ from datetime import datetime
 
 
 def get_time_window(s3_client, bucket_name: str, log_key: str):
-    """dowloads the log csv file
-    creates a timestamp
-    saves timestamp to log
-    returns a tuple with last time and current time
+    """Return start and end of window in which no ingestion occured
+    Dowloads the log csv file
+    Creates a timestamp
+    Saves timestamp to log
+    Returns a tuple with last time and current time
 
     Args:
         s3_client (boto_s3): boto s3 client
@@ -15,6 +16,9 @@ def get_time_window(s3_client, bucket_name: str, log_key: str):
 
     Returns:
         tuple: (time_last: str, time_current: str)
+    
+    Side Effects:
+        create and modify a log csv file
     """
     s3_client.download_file(bucket_name, log_key, '/tmp/last_run_s3.csv')
     time = datetime.now()
