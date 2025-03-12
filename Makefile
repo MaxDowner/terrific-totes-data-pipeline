@@ -74,7 +74,7 @@ run-black:
 
 ## Run the unit tests
 unit-test:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest -v)
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest test/ -v)
 
 ## Run the coverage check
 check-coverage:
@@ -84,3 +84,7 @@ check-coverage:
 run-checks: security-test flake8-test-src flake8-test-test unit-test check-coverage
 
 ########################################################################
+
+## Populate the date table
+date-pop:
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} python deployment_files/dim_date_populate.py)

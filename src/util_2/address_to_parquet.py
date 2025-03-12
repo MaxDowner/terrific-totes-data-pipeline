@@ -28,4 +28,4 @@ def address_to_parquet(updated_rows: list):
             line = json.dumps(dict)
             f.write(line + "\n")
     table = pj.read_json("/tmp/output_address_dict.json")
-    pq.write_table(table, "/tmp/formatted_dim_address.parquet")
+    pq.write_table(table, "/tmp/formatted_dim_location.parquet")

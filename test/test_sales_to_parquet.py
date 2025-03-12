@@ -63,18 +63,18 @@ def sales():
 
 
 def test_process_sales_returns_a_pq_file(sales):
-    if os.path.exists("/tmp/formatted_fact_sales.parquet"):
-        os.remove("/tmp/formatted_fact_sales.parquet")
+    if os.path.exists("/tmp/formatted_fact_sales_order.parquet"):
+        os.remove("/tmp/formatted_fact_sales_order.parquet")
     sales_to_parquet(sales)
-    assert os.path.exists("/tmp/formatted_fact_sales.parquet")
+    assert os.path.exists("/tmp/formatted_fact_sales_order.parquet")
 
 
 def test_pq_file_is_readable(sales):
-    if os.path.exists("/tmp/formatted_fact_sales.parquet"):
-        os.remove("/tmp/formatted_fact_sales.parquet")
+    if os.path.exists("/tmp/formatted_fact_sales_order.parquet"):
+        os.remove("/tmp/formatted_fact_sales_order.parquet")
     sales_to_parquet(sales)
-    table = pq.read_table("/tmp/formatted_fact_sales.parquet")
-    metadata = pq.read_metadata("/tmp/formatted_fact_sales.parquet")
+    table = pq.read_table("/tmp/formatted_fact_sales_order.parquet")
+    metadata = pq.read_metadata("/tmp/formatted_fact_sales_order.parquet")
     assert str(table["units_sold"][2]) == "9000"
     assert str(table["currency_id"][1]) == "3"
     assert str(table['agreed_delivery_date'][1]) == "2022-11-06"

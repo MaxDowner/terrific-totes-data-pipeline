@@ -1,6 +1,7 @@
 from src.util.pg_connection_aws import connect_to_db, close_connection
 from src.util.get_time_window_s3 import get_time_window
 
+
 query_list = [
     """SELECT currency_id, currency_code FROM currency
      WHERE last_updated BETWEEN :time_last AND :time_now;""",
@@ -46,6 +47,10 @@ query_list = [
         WHERE (counterparty.last_updated BETWEEN :time_last AND :time_now)
     OR (address.last_updated BETWEEN :time_last AND :time_now)""",
     """ SELECT sales_order_id,
+        sales_order.created_at::date as created_date,
+        sales_order.created_at::time as created_time,
+        sales_order.last_updated::date as last_updated_date,
+        sales_order.last_updated::time as last_updated_time,        
         staff_id,
         counterparty_id,
         units_sold,
@@ -54,11 +59,7 @@ query_list = [
         design_id,
         agreed_delivery_date,
         agreed_payment_date,
-        agreed_delivery_location_id,
-        sales_order.created_at::date as created_date,
-        sales_order.created_at::time as created_time,
-        sales_order.last_updated::date as last_updated_date,
-        sales_order.last_updated::time as last_updated_time
+        agreed_delivery_location_id
          FROM sales_order
          FULL OUTER JOIN
          staff USING (staff_id)
@@ -110,6 +111,10 @@ column_list = [
     ],
     [
         "sales_order_id",
+        'created_date',
+        'created_time',
+        'last_updated_date',
+        'last_updated_time',
         "staff_id",
         "counterparty_id",
         "units_sold",
