@@ -3,7 +3,7 @@ import json
 
 import boto3
 
-from src.util_2.staff_to_parquet import process_staff
+from src.util_2.staff_to_parquet import staff_to_parquet
 from src.util_2.upload_pq_to_s3 import upload_pq_to_s3
 from src.util.get_s3_bucket_name import get_s3_bucket_name
 from src.util_2.currency_to_parquet import currency_to_parquet
@@ -24,10 +24,7 @@ def processing_lambda_handler(event, context):
     json_download_key = event["Records"][0]["s3"]["object"]["key"]
     json_file_name = f"/tmp/{json_download_key[-10:]}"
 
-    # print(ingestion_bucket)
-    # print(json_download_key)
-    # print(json_file_name)
-
+    # Instantiate S3 client
     s3_client = boto3.client("s3")
 
     # Download the json file
@@ -51,7 +48,7 @@ def processing_lambda_handler(event, context):
         logger.info("Ran process currency util function")
     # util staff
     if db_dict.get("staff"):
-        process_staff(db_dict["staff"])
+        staff_to_parquet(db_dict["staff"])
         logger.info("Ran process staff util function")
     # util - design
     if db_dict.get("design"):

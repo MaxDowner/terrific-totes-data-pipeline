@@ -8,7 +8,7 @@ logger.setLevel(logging.INFO)
 
 
 def connect_to_db(db_details: dict):
-    """connects to postgres db using PG8000
+    """Connects to postgres db using PG8000
     use secret manager util to get db_details
 
     Args:
@@ -30,7 +30,7 @@ def connect_to_db(db_details: dict):
 
 
 def close_connection(db):
-    """closes the db
+    """Closes the db
 
     Args:
         db (pg8000): dabase connection

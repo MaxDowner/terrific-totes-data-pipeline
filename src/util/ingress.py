@@ -71,12 +71,14 @@ query_list = [
         currency USING (currency_id)
          WHERE sales_order.last_updated BETWEEN :time_last AND :time_now;""",
 ]
-table_list = ["currency",
-              "staff",
-              "design",
-              "address",
-              "counterparty",
-              "sales_order"]
+table_list = [
+    "currency",
+    "staff",
+    "design",
+    "address",
+    "counterparty",
+    "sales_order",
+]
 column_list = [
     ["currency_id", "currency_code"],
     [
@@ -111,10 +113,10 @@ column_list = [
     ],
     [
         "sales_order_id",
-        'created_date',
-        'created_time',
-        'last_updated_date',
-        'last_updated_time',
+        "created_date",
+        "created_time",
+        "last_updated_date",
+        "last_updated_time",
         "staff_id",
         "counterparty_id",
         "units_sold",
@@ -128,33 +130,39 @@ column_list = [
 ]
 
 
-def ingress_handler(db_details, s3_client, bucket_name: str, log_key: str):
-    """util func that connects to the db
+def ingress_handler(
+    db_details: dict, s3_client, bucket_name: str, log_key: str
+):
+    """Return list of dictionaries of updated data, with headers as keys.
+    connects to the db
     logs time in csv log
     checks for updated data
     adds headers as keys to dictionary
     returns list of dictionaries of updated data
+    Args:
+        db_details (dict): database details returned from get secret
+        s3_client (boto3): Boto3 s3 client
+        bucket_name (str): name of bucket where logs are stored
+        log_key (str): s3 key to log file
 
     Returns:
-        list: list of dictionaries to be processed
+        list: list of dicts containing the updated data to be processed
     """
     db = None
     data_dump = []
     try:
         db = connect_to_db(db_details)
         time_last, time_now = get_time_window(s3_client, bucket_name, log_key)
-        # print(time_last, time_now)
-        # for testing to get all data, remove on prod
-        # time_last = "1970-01-01 00:00:00.000"
         for i in range(len(query_list)):
             updated_data = db.run(
                 query_list[i], time_last=time_last, time_now=time_now
-                )
+            )
             if i == 5:
                 for row in updated_data:
                     row[4] = str(row[4])
-            table_updates = [dict(zip(column_list[i], row))
-                             for row in updated_data]
+            table_updates = [
+                dict(zip(column_list[i], row)) for row in updated_data
+            ]
             data_dump.append({table_list[i]: table_updates})
         data_dump.append({"time_of_update": time_now})
 

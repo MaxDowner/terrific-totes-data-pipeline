@@ -1,4 +1,13 @@
-def filename_from_timestamp(timestamp):
+def filename_from_timestamp(timestamp: str):
+    """Return a sensible aws object key
+    constructed from the time at which the ingestion lambda runs.
+
+    Args:
+        timestamp (str):timstamp calculated in lambda
+
+    Returns:
+        str: filepath for s3 key '{year}/{month}/{day}/{hour}/{minute}'
+    """
 
     year = timestamp[:4]
     month = timestamp[5:7]
