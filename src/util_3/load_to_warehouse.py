@@ -31,7 +31,6 @@ def load_to_dw(secret, file, table_name):
         )
         panda_table = panda_table.astype(d)
         # Converts back to pyarrow table
-        # Converts back to pyarrow table
         arrow_table = pyarrow.Table.from_pandas(panda_table)
 
         # fact_sales_order rows are not updated, only appended
