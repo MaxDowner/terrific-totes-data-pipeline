@@ -32,7 +32,7 @@ def dim_date_populate():
         cur.execute(f"SELECT * FROM {table_name};")
         remote_date_table = cur.fetch_arrow_table()
         print(len(remote_date_table["year"]))
-        if len(remote_date_table["year"]) > 0:
+        if len(remote_date_table["year"]) == 0:
             create_dataset()
             table = pq.read_table(file)
             panda_table = table.to_pandas()
