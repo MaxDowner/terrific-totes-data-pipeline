@@ -1,6 +1,6 @@
 import logging
 import json
-
+from time import sleep
 import boto3
 
 from src.util_2.staff_to_parquet import staff_to_parquet
@@ -62,10 +62,6 @@ def processing_lambda_handler(event, context):
     if db_dict.get("counterparty"):
         counterparty_to_parquet(db_dict["counterparty"])
         logger.info("Ran process counterparty util function")
-    # util - sales order
-    if db_dict.get("sales_order"):
-        sales_to_parquet(db_dict["sales_order"])
-        logger.info("Ran process sales_order util function")
 
     # upload the pq to s3 bucket
     key_prefix = json_download_key[:-5]
@@ -74,3 +70,12 @@ def processing_lambda_handler(event, context):
     logger.info(
         f'Parquet file(s) uploaded to "s3://{processed_bucket}/{key_prefix}"'
     )
+
+    # util - sales order
+    if db_dict.get("sales_order"):
+        sleep(10)
+        sales_to_parquet(db_dict["sales_order"])
+        file = "/tmp/formatted_fact_sales_order.parquet"
+        key = key_prefix + file[5:]
+        s3_client.upload_file(file, processed_bucket, key)
+        logger.info("Ran process sales_order util function")
