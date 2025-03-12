@@ -3,7 +3,7 @@ import json
 import pyarrow.parquet as pq
 
 
-def process_staff(updated_rows: list):
+def staff_to_parquet(updated_rows: list):
     """takes a list of updated data for staff
     converts the data to parquet
 
