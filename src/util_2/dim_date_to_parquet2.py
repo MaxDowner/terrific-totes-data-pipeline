@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def create_dataset():
-    """Generate a dim_date table in parquet 
+    """Generate a dim_date table in parquet
     and write to a file in the /tmp/ folder.
     """
     # creates dataset

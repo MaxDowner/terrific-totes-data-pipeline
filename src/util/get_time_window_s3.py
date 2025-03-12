@@ -16,7 +16,7 @@ def get_time_window(s3_client, bucket_name: str, log_key: str):
 
     Returns:
         tuple: (time_last: str, time_current: str)
-    
+
     Side Effects:
         create and modify a log csv file
     """
