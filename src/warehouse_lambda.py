@@ -12,14 +12,14 @@ def warehouse_lambda_handler(event, context):
     """Lambda function that populates datawarehouse with updated information
     from a bucket of processed data
     Args:
-        event (dict): S3 Put event triggered by data entering processed bucket  
+        event (dict): S3 Put event triggered by data entering processed bucket
         context (dict): empty dictionary in this function
-        
+
     Raises:
         e1: Unable to download from S3 error
         e2: Unable to access secrets error
         e3: Unable to update the data warehouse error
-    
+
     Returns:
         [str, str, str]: processing bucket, download key, table name
     """
