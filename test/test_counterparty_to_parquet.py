@@ -55,10 +55,7 @@ def test_pq_file_is_readable(counterparty):
     if os.path.exists("/tmp/formatted_dim_counterparty.parquet"):
         os.remove("/tmp/formatted_dim_counterparty.parquet")
     counterparty_to_parquet(counterparty)
-    # with open("/tmp/formatted_dim_counterparty.parquet", 'r') as f:
-    #     pass
     table = pq.read_table("/tmp/formatted_dim_counterparty.parquet")
-    # parquet_file = pq.ParquetFile("/tmp/formatted_dim_counterparty.parquet")
     metadata = pq.read_metadata("/tmp/formatted_dim_counterparty.parquet")
     assert str(table["counterparty_legal_name"][0]) == "Jeremie Ducket"
     assert str(table["counterparty_legal_district"][2]) == "Mid Manchester"
