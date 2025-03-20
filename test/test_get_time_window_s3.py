@@ -163,7 +163,7 @@ def test_writes_to_csv_to_s3():
             while file.read(1) != b"\n":
                 file.seek(-2, os.SEEK_CUR)
             last_line_before = file.readline().decode()
-        # run our cammand, updates the file
+        # run our command, updates the file
         get_time_window(test_client, bucket_name, object_key)
         test_client.download_file(
             bucket_name, object_key, "logs/last_run_s3_downloaded_for_test.csv"
